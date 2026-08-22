@@ -1,17 +1,42 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  color: #12201a;
-  background: #f6f8f7;
+  color: #11110f;
+  background: #f4f1ea;
+
+  --fb-bg: #f4f1ea;
+  --fb-surface: #ffffff;
+  --fb-dark: #11110f;
+  --fb-muted: #6d6961;
+  --fb-border: rgba(17, 17, 15, 0.1);
+
+  --fb-green: #dcebd8;
+  --fb-green-dark: #375b32;
+
+  --fb-accent: #d7ee82;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   margin: 0;
   min-width: 320px;
-  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  background: var(--fb-bg);
+  color: var(--fb-dark);
+  font-family: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: #11110f;
+  color: #f4f1ea;
 }
 
 button,
@@ -21,22 +46,50 @@ textarea {
   font: inherit;
 }
 
-.trust-strip {
-  @apply rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-xs font-medium text-amber-900;
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
 }
 
-.field {
-  @apply w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm outline-none focus:border-mint focus:ring-2 focus:ring-mint/20;
+img {
+  max-width: 100%;
+  display: block;
 }
 
-.btn-primary {
-  @apply inline-flex items-center justify-center gap-2 rounded-md bg-mint px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-teal-800;
-}
+@layer components {
+  .trust-strip {
+    @apply rounded-2xl border border-black/10 bg-white px-4 py-3 text-xs font-medium text-black/60;
+  }
 
-.btn-secondary {
-  @apply inline-flex items-center justify-center gap-2 rounded-md border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-ink transition hover:border-mint hover:text-mint;
-}
+  .field {
+    @apply w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-[#11110f] outline-none transition placeholder:text-black/30 focus:border-black/30 focus:ring-4 focus:ring-black/5;
+  }
 
-.panel {
-  @apply rounded-lg border border-slate-200 bg-white shadow-soft;
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-[#11110f] px-5 py-3 text-sm font-semibold text-white transition duration-200 hover:-translate-y-0.5 hover:bg-black focus:outline-none focus:ring-4 focus:ring-black/10;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-black/10 bg-white px-5 py-3 text-sm font-semibold text-[#11110f] transition duration-200 hover:-translate-y-0.5 hover:bg-[#faf9f6] focus:outline-none focus:ring-4 focus:ring-black/10;
+  }
+
+  .panel {
+    @apply rounded-[1.5rem] border border-black/10 bg-white shadow-[0_20px_60px_rgba(0,0,0,0.06)];
+  }
+
+  .panel-dark {
+    @apply rounded-[1.5rem] border border-white/10 bg-[#11110f] text-white;
+  }
+
+  .section-label {
+    @apply text-xs font-semibold uppercase tracking-[0.2em] text-black/40;
+  }
+
+  .editorial-title {
+    @apply font-medium tracking-[-0.05em] leading-[0.95];
+  }
+
+  .editorial-italic {
+    font-family: 'DM Serif Display', Georgia, serif;
+  }
 }
