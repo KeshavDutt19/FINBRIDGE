@@ -1,0 +1,462 @@
+{
+  "scholarships": [
+    {
+      "title": "AICTE Pragati Scholarship Scheme for Girl Students (Technical Degree)",
+      "provider": "All India Council for Technical Education (AICTE)",
+      "education_level": "Undergraduate",
+      "eligible_state": "All India",
+      "eligible_category": "All",
+      "eligible_gender": "Female",
+      "max_annual_family_income_inr": 800000,
+      "award_amount": "₹50,000 per annum for each year of eligible study",
+      "deadline": "2026-10-31",
+      "eligibility_summary": "Girl students admitted to the first year of an AICTE-approved technical degree course, or second year through lateral entry, with annual family income not exceeding ₹8 lakh; maximum two girl children per family.",
+      "official_apply_url": "https://scholarships.gov.in/",
+      "source": "https://scholarships.gov.in/All-Scholarships"
+    },
+    {
+      "title": "AICTE Pragati Scholarship Scheme for Girl Students (Technical Diploma)",
+      "provider": "All India Council for Technical Education (AICTE)",
+      "education_level": "Undergraduate",
+      "eligible_state": "All India",
+      "eligible_category": "All",
+      "eligible_gender": "Female",
+      "max_annual_family_income_inr": 800000,
+      "award_amount": "₹50,000 per annum for each year of eligible study",
+      "deadline": "2026-10-31",
+      "eligibility_summary": "Girl students admitted to the first year of an AICTE-approved technical diploma course, or second year through lateral entry, with annual family income not exceeding ₹8 lakh; maximum two girl children per family.",
+      "official_apply_url": "https://scholarships.gov.in/",
+      "source": "https://scholarships.gov.in/All-Scholarships"
+    },
+    {
+      "title": "AICTE Saksham Scholarship Scheme for Specially Abled Students (Technical Degree)",
+      "provider": "All India Council for Technical Education (AICTE)",
+      "education_level": "Undergraduate",
+      "eligible_state": "All India",
+      "eligible_category": "All",
+      "eligible_gender": "Any",
+      "max_annual_family_income_inr": 800000,
+      "award_amount": "₹50,000 per annum for each year of eligible study",
+      "deadline": "2026-10-31",
+      "eligibility_summary": "Students with certified disability of at least 40% pursuing an AICTE-approved technical degree, generally admitted in the first year or second year through lateral entry, with annual family income not exceeding ₹8 lakh.",
+      "official_apply_url": "https://scholarships.gov.in/",
+      "source": "https://scholarships.gov.in/All-Scholarships"
+    },
+    {
+      "title": "AICTE Saksham Scholarship Scheme for Specially Abled Students (Technical Diploma)",
+      "provider": "All India Council for Technical Education (AICTE)",
+      "education_level": "Undergraduate",
+      "eligible_state": "All India",
+      "eligible_category": "All",
+      "eligible_gender": "Any",
+      "max_annual_family_income_inr": 800000,
+      "award_amount": "₹50,000 per annum for each year of eligible study",
+      "deadline": "2026-10-31",
+      "eligibility_summary": "Students with certified disability of at least 40% pursuing an AICTE-approved technical diploma, generally admitted in the first year or second year through lateral entry, with annual family income not exceeding ₹8 lakh.",
+      "official_apply_url": "https://scholarships.gov.in/",
+      "source": "https://scholarships.gov.in/All-Scholarships"
+    },
+    {
+      "title": "AICTE Swanath Scholarship Scheme (Technical Degree)",
+      "provider": "All India Council for Technical Education (AICTE)",
+      "education_level": "Undergraduate",
+      "eligible_state": "All India",
+      "eligible_category": "All",
+      "eligible_gender": "Any",
+      "max_annual_family_income_inr": 800000,
+      "award_amount": "₹50,000 per annum",
+      "deadline": "2026-10-31",
+      "eligibility_summary": "Students in AICTE-approved technical degree programmes who meet the Swanath beneficiary conditions, including orphanhood, parental death due to COVID-19, ward of Armed Forces/Central Paramilitary Forces personnel martyred in action, and categories covered by the updated scheme, with family income not exceeding ₹8 lakh.",
+      "official_apply_url": "https://scholarships.gov.in/",
+      "source": "https://scholarships.gov.in/All-Scholarships"
+    },
+    {
+      "title": "AICTE Swanath Scholarship Scheme (Technical Diploma)",
+      "provider": "All India Council for Technical Education (AICTE)",
+      "education_level": "Undergraduate",
+      "eligible_state": "All India",
+      "eligible_category": "All",
+      "eligible_gender": "Any",
+      "max_annual_family_income_inr": 800000,
+      "award_amount": "₹50,000 per annum",
+      "deadline": "2026-10-31",
+      "eligibility_summary": "Students in AICTE-approved technical diploma programmes who meet the Swanath beneficiary conditions, including orphanhood, parental death due to COVID-19, ward of Armed Forces/Central Paramilitary Forces personnel martyred in action, and categories covered by the updated scheme, with family income not exceeding ₹8 lakh.",
+      "official_apply_url": "https://scholarships.gov.in/",
+      "source": "https://scholarships.gov.in/All-Scholarships"
+    },
+    {
+      "title": "PM-USP Special Scholarship Scheme for Jammu & Kashmir and Ladakh",
+      "provider": "Ministry of Education / AICTE",
+      "education_level": "Undergraduate",
+      "eligible_state": "Jammu & Kashmir and Ladakh",
+      "eligible_category": "All",
+      "eligible_gender": "Any",
+      "max_annual_family_income_inr": 800000,
+      "award_amount": "Academic fee up to ₹30,000/year for General Degree, ₹1,25,000/year for Professional/Engineering/Nursing/Pharmacy/Architecture/HMCT, or ₹3,00,000/year for Medical; plus ₹1,00,000/year maintenance allowance",
+      "deadline": "2026-09-30",
+      "eligibility_summary": "Students domiciled in Jammu & Kashmir or Ladakh who have passed Class XII/equivalent and satisfy the scheme's admission and income conditions; the scheme supports undergraduate study outside the UTs in eligible institutions.",
+      "official_apply_url": "https://scholarships.gov.in/",
+      "source": "https://scholarships.gov.in/All-Scholarships"
+    },
+    {
+      "title": "PM-USP Central Sector Scheme of Scholarship for College and University Students (CSSS) — Renewal",
+      "provider": "Department of Higher Education, Ministry of Education",
+      "education_level": "Undergraduate",
+      "eligible_state": "All India",
+      "eligible_category": "All",
+      "eligible_gender": "Any",
+      "max_annual_family_income_inr": 450000,
+      "award_amount": "₹12,000 per annum at UG level for the first three years; ₹20,000 per annum at PG level / specified later-study years as prescribed by the scheme",
+      "deadline": "2026-09-30",
+      "eligibility_summary": "Merit-based scholarship for eligible college and university students meeting the scheme's Class XII merit, institution, income and renewal requirements; the 2026-27 NSP listing currently shows renewal applications open.",
+      "official_apply_url": "https://scholarships.gov.in/",
+      "source": "https://scholarships.gov.in/All-Scholarships"
+    },
+    {
+      "title": "Central Sector Scholarship of Top Class Education for SC Students",
+      "provider": "Department of Social Justice and Empowerment",
+      "education_level": "Undergraduate",
+      "eligible_state": "All India",
+      "eligible_category": "SC",
+      "eligible_gender": "Any",
+      "max_annual_family_income_inr": 800000,
+      "award_amount": "Full tuition and non-refundable charges subject to notified ceilings; academic allowance ₹86,000 in the first year and ₹41,000 in subsequent years under the published scheme pattern",
+      "deadline": "2026-10-31",
+      "eligibility_summary": "Meritorious SC students admitted to notified Top Class institutions and eligible courses, subject to the notified family-income ceiling and institutional/course conditions.",
+      "official_apply_url": "https://scholarships.gov.in/",
+      "source": "https://socialjustice.gov.in/writereaddata/UploadFile/Top%20Class%20Education%20for%20SC%20Students_2021_22637744907806702333.pdf"
+    },
+    {
+      "title": "Scholarship for Top Class Education for Students with Disabilities",
+      "provider": "Department of Empowerment of Persons with Disabilities",
+      "education_level": "Undergraduate",
+      "eligible_state": "All India",
+      "eligible_category": "All",
+      "eligible_gender": "Any",
+      "max_annual_family_income_inr": 800000,
+      "award_amount": "Financial support covering eligible tuition and notified academic/living components under the Top Class Education for Students with Disabilities scheme",
+      "deadline": "2026-10-31",
+      "eligibility_summary": "Students with benchmark disability pursuing higher education in eligible institutions/courses under the notified Top Class scheme, subject to the family-income ceiling and disability certification requirements.",
+      "official_apply_url": "https://scholarships.gov.in/",
+      "source": "https://scholarships.gov.in/All-Scholarships"
+    },
+    {
+      "title": "Post Matric Scholarship for Students with Disabilities",
+      "provider": "Department of Empowerment of Persons with Disabilities",
+      "education_level": "Postgraduate",
+      "eligible_state": "All India",
+      "eligible_category": "All",
+      "eligible_gender": "Any",
+      "max_annual_family_income_inr": 250000,
+      "award_amount": "Maintenance, compulsory non-refundable fees and other allowances as prescribed under the disability scholarship guidelines",
+      "deadline": "2026-10-31",
+      "eligibility_summary": "Students with benchmark disability pursuing post-matric education, subject to disability certification, course/institution eligibility and the notified annual family-income ceiling.",
+      "official_apply_url": "https://scholarships.gov.in/",
+      "source": "https://scholarships.gov.in/All-Scholarships"
+    },
+    {
+      "title": "Financial Assistance for Education to the Wards of Beedi/Cine/IOMC/LSDM — Post Matric",
+      "provider": "Ministry of Labour & Employment",
+      "education_level": "Postgraduate",
+      "eligible_state": "All India",
+      "eligible_category": "All",
+      "eligible_gender": "Any",
+      "max_annual_family_income_inr": 150000,
+      "award_amount": "Education assistance as per notified class/course slab under the Labour Welfare Fund scholarship scheme",
+      "deadline": "2026-10-31",
+      "eligibility_summary": "Children/wards of eligible Beedi, Cine, IOMC or LSDM workers pursuing post-matric education, subject to the scheme's worker-status, course and family-income conditions.",
+      "official_apply_url": "https://scholarships.gov.in/",
+      "source": "https://scholarships.gov.in/All-Scholarships"
+    },
+    {
+      "title": "Financial Assistance for Education to the Wards of Beedi/Cine/IOMC/LSDM — Pre Matric",
+      "provider": "Ministry of Labour & Employment",
+      "education_level": "School",
+      "eligible_state": "All India",
+      "eligible_category": "All",
+      "eligible_gender": "Any",
+      "max_annual_family_income_inr": 150000,
+      "award_amount": "Education assistance as per notified pre-matric class slab under the Labour Welfare Fund scholarship scheme",
+      "deadline": "2026-08-31",
+      "eligibility_summary": "Children/wards of eligible Beedi, Cine, IOMC or LSDM workers studying at pre-matric level and satisfying the worker-status, course and family-income conditions.",
+      "official_apply_url": "https://scholarships.gov.in/",
+      "source": "https://scholarships.gov.in/All-Scholarships"
+    },
+    {
+      "title": "National Means Cum Merit Scholarship Scheme (NMMSS)",
+      "provider": "Department of School Education & Literacy, Ministry of Education",
+      "education_level": "School",
+      "eligible_state": "All India",
+      "eligible_category": "All",
+      "eligible_gender": "Any",
+      "max_annual_family_income_inr": 350000,
+      "award_amount": "₹12,000 per annum from Class IX through Class XII",
+      "deadline": "2026-08-31",
+      "eligibility_summary": "Selected students from eligible government, government-aided and local-body schools who qualify under the NMMSS merit and means requirements and continue their studies through the covered classes.",
+      "official_apply_url": "https://scholarships.gov.in/",
+      "source": "https://scholarships.gov.in/All-Scholarships"
+    },
+    {
+      "title": "National Fellowship and Scholarship for Higher Education of ST Students — Scholarship",
+      "provider": "Ministry of Tribal Affairs",
+      "education_level": "Postgraduate",
+      "eligible_state": "All India",
+      "eligible_category": "ST",
+      "eligible_gender": "Any",
+      "max_annual_family_income_inr": 250000,
+      "award_amount": "Financial support for higher education including notified scholarship components under the National Fellowship and Scholarship for Higher Education of ST Students scheme",
+      "deadline": "2026-10-31",
+      "eligibility_summary": "Eligible ST students admitted to notified higher-education programmes and institutions under the Ministry of Tribal Affairs scheme, subject to income and other notified eligibility requirements.",
+      "official_apply_url": "https://scholarships.gov.in/",
+      "source": "https://scholarships.gov.in/All-Scholarships"
+    }
+  ],
+  "loans": [
+    {
+      "bank_name": "State Bank of India",
+      "loan_category": "Education Loan",
+      "interest_rate_range": "8.90% - 9.90% p.a. for current Global Ed-Vantage/Student Loan variants; select institutions may qualify for lower scheme rates",
+      "processing_fee": "0.50% of loan amount, minimum ₹10,000 and maximum ₹50,000 plus applicable GST for SBI Global Ed-Vantage",
+      "min_amount_inr": 750000,
+      "max_amount_inr": 30000000,
+      "preferred_tenure_range_months": "Up to 180",
+      "government_subsidy_details": "Eligible borrowers may qualify for PM-USP CSIS or PM-Vidyalaxmi interest support subject to government scheme conditions. PM-USP CSIS can provide 100% interest subvention during moratorium for eligible technical/professional borrowers with annual family income up to ₹4.5 lakh and eligible loans up to ₹10 lakh.",
+      "terms_and_conditions": {
+        "collateral_required": "Yes for the collateral-backed Global Ed-Vantage variant; select institutions have collateral-free limits subject to SBI scheme rules",
+        "moratorium_period": "Course period plus 6 months after completion for the Global Ed-Vantage scheme",
+        "co_applicant_required": "Yes",
+        "margin_money": "Scholarship/assistantship is included in margin; margin varies by scheme and destination"
+      },
+      "required_documents_checklist": {
+        "identity_proof": [
+          "PAN Card",
+          "Aadhaar Card"
+        ],
+        "address_proof": [
+          "Aadhaar Card",
+          "Passport",
+          "Utility Bill"
+        ],
+        "income_proof": [
+          "Income Tax Returns",
+          "Salary Slips",
+          "Bank Statements"
+        ],
+        "category_specific_proof": [
+          "Admission Letter",
+          "Fee Structure",
+          "Academic Records",
+          "Collateral Property Documents where applicable",
+          "Visa/I-20 or equivalent for overseas study"
+        ]
+      },
+      "official_apply_url": "https://sbi.bank.in/web/personal-banking/loans/education-loans/global-ed-vantage-scheme"
+    },
+    {
+      "bank_name": "Bank of Baroda",
+      "loan_category": "Education Loan",
+      "interest_rate_range": "From 6.85% p.a. for the published premier-institution education-loan route",
+      "processing_fee": "Study in India: NIL; Study abroad: 1% of loan amount, maximum ₹10,000, refundable after first disbursement; ₹8,500 advocate/valuer charges per property where mortgage is used",
+      "min_amount_inr": 10000,
+      "max_amount_inr": 8000000,
+      "preferred_tenure_range_months": "120 to 180 after moratorium",
+      "government_subsidy_details": "Eligible students may access government education-loan interest subsidy schemes such as PM-USP CSIS/PM-Vidyalaxmi subject to scheme and income conditions.",
+      "terms_and_conditions": {
+        "collateral_required": "No up to scheme-specific collateral-free thresholds; above those thresholds tangible collateral equal to 100% of loan amount is required, with higher security coverage for exposures above ₹80 lakh",
+        "moratorium_period": "Course period plus 12 months",
+        "co_applicant_required": "Yes, parent/guardian co-obligation",
+        "margin_money": "Nil below ₹4 lakh; 5% for ₹4 lakh to ₹7.5 lakh; scheme-specific conditions above ₹7.5 lakh"
+      },
+      "required_documents_checklist": {
+        "identity_proof": [
+          "PAN Card",
+          "Aadhaar Card",
+          "Passport"
+        ],
+        "address_proof": [
+          "Aadhaar Card",
+          "Utility Bill",
+          "Passport"
+        ],
+        "income_proof": [
+          "Salary Slips",
+          "Income Tax Returns",
+          "Bank Statements"
+        ],
+        "category_specific_proof": [
+          "Admission Proof",
+          "Entrance Exam Result where applicable",
+          "Study Cost/Schedule of Expenses",
+          "Academic Records",
+          "Property Documents where applicable"
+        ]
+      },
+      "official_apply_url": "https://bankofbaroda.bank.in/loans/education-loan/baroda-education-loan-to-students-of-premier-institutions"
+    },
+    {
+      "bank_name": "Punjab National Bank",
+      "loan_category": "Education Loan",
+      "interest_rate_range": "7.00% - 11.85% p.a. contracted-loan range reported in the bank's published retail lending-rate disclosure",
+      "processing_fee": "Studies in India: NIL; Studies abroad: 1% of loan amount, minimum ₹10,000, refundable after first disbursement",
+      "min_amount_inr": 100000,
+      "max_amount_inr": 750000,
+      "preferred_tenure_range_months": "Up to 180",
+      "government_subsidy_details": "PM-USP CSIS can cover eligible interest during the moratorium for EWS students with family income up to ₹4.5 lakh, subject to scheme rules; CGFSEL provides credit guarantee support for eligible loans up to ₹7.5 lakh without collateral/third-party guarantee.",
+      "terms_and_conditions": {
+        "collateral_required": "No collateral for eligible CGFSEL education loans up to ₹7.5 lakh",
+        "moratorium_period": "Course period plus 1 year under the standard IBA-linked structure",
+        "co_applicant_required": "Yes",
+        "margin_money": "Nil up to ₹4 lakh; 5% for higher domestic-study amount; 15% for study abroad under CGFSEL"
+      },
+      "required_documents_checklist": {
+        "identity_proof": [
+          "Aadhaar Card",
+          "PAN Card",
+          "Passport"
+        ],
+        "address_proof": [
+          "Aadhaar Card",
+          "Utility Bill",
+          "Voter ID"
+        ],
+        "income_proof": [
+          "Salary Slips",
+          "ITR",
+          "Bank Statements"
+        ],
+        "category_specific_proof": [
+          "Admission Letter",
+          "Fee Structure",
+          "Academic Records",
+          "Co-applicant Documents",
+          "Collateral Papers where applicable"
+        ]
+      },
+      "official_apply_url": "https://www.pnbindia.in/"
+    },
+    {
+      "bank_name": "Bank of Baroda",
+      "loan_category": "Home Loan",
+      "interest_rate_range": "7.20% p.a. starting rate shown on the current Baroda Home Loan page; applicable floating rate varies by borrower profile",
+      "processing_fee": "Up to ₹50 lakh: 0.50%, minimum ₹8,500 and maximum ₹15,000; above ₹50 lakh: 0.25%, minimum ₹8,500 and maximum ₹25,000, excluding GST",
+      "min_amount_inr": 100000,
+      "max_amount_inr": 200000000,
+      "preferred_tenure_range_months": "12 to 360",
+      "government_subsidy_details": "Eligible beneficiaries may qualify for PMAY-U 2.0 Interest Subsidy Scheme: 4% subsidy on the first ₹8 lakh for up to 12 years, subject to household income up to ₹9 lakh, eligible home-loan amount up to ₹25 lakh and property value up to ₹35 lakh.",
+      "terms_and_conditions": {
+        "collateral_required": "Yes; mortgage of the financed property, with alternative securities accepted at the bank's discretion in specified cases",
+        "moratorium_period": "Up to 36 months, depending on construction stage",
+        "co_applicant_required": "Depends on borrower profile and sanction conditions",
+        "margin_money": "10% for loans up to ₹30 lakh; 20% for ₹30–75 lakh; 25% above ₹75 lakh"
+      },
+      "required_documents_checklist": {
+        "identity_proof": [
+          "PAN Card",
+          "Aadhaar Card",
+          "Passport"
+        ],
+        "address_proof": [
+          "Aadhaar Card",
+          "Utility Bill",
+          "Voter ID"
+        ],
+        "income_proof": [
+          "Salary Slips",
+          "Form 16",
+          "ITR",
+          "Bank Statements"
+        ],
+        "category_specific_proof": [
+          "Sale Agreement",
+          "Title Deeds",
+          "Approved Building Plan",
+          "Property Tax Receipts",
+          "Construction Estimates",
+          "Builder/Developer Documents"
+        ]
+      },
+      "official_apply_url": "https://bankofbaroda.bank.in/loans/home-loan/baroda-home-loan"
+    },
+    {
+      "bank_name": "Bank of Baroda",
+      "loan_category": "Car Loan",
+      "interest_rate_range": "7.60% - 11.30% p.a. floating; fixed-rate option from 8.50% to 11.20% for new cars",
+      "processing_fee": "₹1,500 + GST for loan amount up to ₹10 lakh; ₹2,000 + GST above ₹10 lakh; ₹1,000 + GST under Baroda Direct Car Loan scheme; nil for specified direct-approach and special-customer cases",
+      "min_amount_inr": 100000,
+      "max_amount_inr": 20000000,
+      "preferred_tenure_range_months": "12 to 84",
+      "government_subsidy_details": "No general central-government interest subsidy is attached to a standard car loan; concessions can apply under specific bank/customer schemes.",
+      "terms_and_conditions": {
+        "collateral_required": "Yes; hypothecation of the financed vehicle",
+        "moratorium_period": "No general moratorium published for standard new-car loans",
+        "co_applicant_required": "Depends on borrower profile and sanction conditions",
+        "margin_money": "Up to 90% financing under the published vehicle-loan offer, with the balance funded by the borrower"
+      },
+      "required_documents_checklist": {
+        "identity_proof": [
+          "PAN Card",
+          "Aadhaar Card",
+          "Passport"
+        ],
+        "address_proof": [
+          "Aadhaar Card",
+          "Utility Bill",
+          "Voter ID"
+        ],
+        "income_proof": [
+          "Salary Slips",
+          "Form 16",
+          "ITR",
+          "Bank Statements"
+        ],
+        "category_specific_proof": [
+          "Vehicle Proforma Invoice",
+          "Dealer Quotation",
+          "RC/Vehicle Valuation for used cars",
+          "Insurance Documents"
+        ]
+      },
+      "official_apply_url": "https://bankofbaroda.bank.in/loans/vehicle-loan/baroda-car-loan"
+    },
+    {
+      "bank_name": "Punjab National Bank",
+      "loan_category": "Car Loan",
+      "interest_rate_range": "8.80% - 9.60% p.a. for new cars in the bank's published RLLR-linked pricing examples, depending on borrower/CIBIL segment",
+      "processing_fee": "0.25% of loan amount, minimum ₹1,000 and maximum ₹1,500 plus applicable taxes",
+      "min_amount_inr": 100000,
+      "max_amount_inr": 2000000,
+      "preferred_tenure_range_months": "12 to 84",
+      "government_subsidy_details": "No general government interest subsidy for a standard PNB car loan.",
+      "terms_and_conditions": {
+        "collateral_required": "Yes; hypothecation of the financed vehicle",
+        "moratorium_period": "No general moratorium published for standard car loans",
+        "co_applicant_required": "May be required based on eligibility and sanction",
+        "margin_money": "Varies by scheme, borrower profile and vehicle; bank-specific margin conditions apply"
+      },
+      "required_documents_checklist": {
+        "identity_proof": [
+          "PAN Card",
+          "Aadhaar Card"
+        ],
+        "address_proof": [
+          "Aadhaar Card",
+          "Utility Bill",
+          "Voter ID"
+        ],
+        "income_proof": [
+          "Salary Slips",
+          "Form 16",
+          "ITR",
+          "Bank Statements"
+        ],
+        "category_specific_proof": [
+          "Vehicle Quotation",
+          "Proforma Invoice",
+          "Insurance/Registration Documents",
+          "RC and Valuation Documents for used vehicles"
+        ]
+      },
+      "official_apply_url": "https://www.pnbindia.in/"
+    }
+  ]
+}
