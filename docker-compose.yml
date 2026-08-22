@@ -1,0 +1,11 @@
+services:
+  mongo:
+    image: mongo:7
+    container_name: finbridge-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - finbridge-mongo-data:/data/db
+
+volumes:
+  finbridge-mongo-data:
