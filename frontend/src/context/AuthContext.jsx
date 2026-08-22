@@ -1,4 +1,11 @@
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+
 import { api } from '../lib/api.js';
 
 const AuthContext = createContext(null);
@@ -8,46 +15,103 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!localStorage.getItem('finbridge_token')) {
+    const token = localStorage.getItem('finbridge_token');
+
+    if (!token) {
       setLoading(false);
       return;
     }
+
     api('/auth/me')
-      .then(data => setUser(data.user))
-      .catch(() => localStorage.removeItem('finbridge_token'))
-      .finally(() => setLoading(false));
+      .then((data) => {
+        setUser(data.user);
+      })
+      .catch(() => {
+        localStorage.removeItem('finbridge_token');
+        setUser(null);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
 
   const value = useMemo(
     () => ({
       user,
       loading,
-      async login(email, password) {
-        const data = await api('/auth/login', { method: 'POST', body: JSON.stringify({ email, password }) });
-        localStorage.setItem('finbridge_token', data.token);
+
+      async login(email, password, portal = 'user') {
+        const endpoint =
+          portal === 'admin'
+            ? '/auth/login/admin'
+            : '/auth/login/user';
+
+        const data = await api(endpoint, {
+          method: 'POST',
+          body: JSON.stringify({
+            email,
+            password,
+          }),
+        });
+
+        localStorage.setItem(
+          'finbridge_token',
+          data.token
+        );
+
         setUser(data.user);
+
         return data.user;
       },
+
       async register(payload) {
-        const data = await api('/auth/register', { method: 'POST', body: JSON.stringify(payload) });
-        localStorage.setItem('finbridge_token', data.token);
+        const safePayload = {
+          ...payload,
+          userType:
+            payload.userType === 'admin'
+              ? 'student'
+              : payload.userType,
+        };
+
+        const data = await api('/auth/register', {
+          method: 'POST',
+          body: JSON.stringify(safePayload),
+        });
+
+        localStorage.setItem(
+          'finbridge_token',
+          data.token
+        );
+
         setUser(data.user);
+
         return data.user;
       },
+
       async updateProfile(profile) {
-        const data = await api('/auth/profile', { method: 'PUT', body: JSON.stringify(profile) });
+        const data = await api('/auth/profile', {
+          method: 'PUT',
+          body: JSON.stringify(profile),
+        });
+
         setUser(data.user);
+
         return data.user;
       },
+
       logout() {
         localStorage.removeItem('finbridge_token');
         setUser(null);
-      }
+      },
     }),
     [user, loading]
   );
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+    </AuthContext.Provider>
+  );
 }
 
 export function useAuth() {

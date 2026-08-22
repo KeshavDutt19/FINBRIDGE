@@ -1,4 +1,4 @@
-import {
+﻿import {
   Banknote,
   GraduationCap,
   LayoutDashboard,
@@ -19,12 +19,15 @@ import {
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext.jsx';
 
-const nav = [
+const userNav = [
   ['Dashboard', '/dashboard', LayoutDashboard],
   ['Scholarships', '/scholarships', GraduationCap],
   ['Loans', '/loans', Banknote],
   ['Profile', '/profile', UserRound],
-  ['Admin', '/admin', ShieldCheck],
+];
+
+const adminNav = [
+  ['Admin Dashboard', '/admin', ShieldCheck],
 ];
 
 export default function AppLayout() {
@@ -33,21 +36,23 @@ export default function AppLayout() {
 
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  const handleLogout = () => {
+  const currentNav =
+    user?.userType === 'admin'
+      ? adminNav
+      : userNav;
+
+  function handleLogout() {
     logout();
+    setMobileOpen(false);
     navigate('/');
-  };
+  }
 
   return (
     <div className="min-h-screen bg-[#f4f1ea] text-[#11110f]">
 
-      {/* =========================
-          NAVBAR
-      ========================== */}
       <header className="sticky top-0 z-50 border-b border-black/10 bg-[#f4f1ea]/85 backdrop-blur-xl">
         <div className="mx-auto flex h-[76px] max-w-[1500px] items-center justify-between px-5 sm:px-8 lg:px-12">
 
-          {/* Brand */}
           <Link
             to="/"
             className="group flex items-center gap-3"
@@ -61,10 +66,9 @@ export default function AppLayout() {
             </span>
           </Link>
 
-          {/* Desktop Navigation */}
           {user && (
             <nav className="hidden items-center gap-1 lg:flex">
-              {nav.map(([label, to, Icon]) => (
+              {currentNav.map(([label, to, Icon]) => (
                 <NavLink
                   key={to}
                   to={to}
@@ -91,13 +95,14 @@ export default function AppLayout() {
             </nav>
           )}
 
-          {/* Right controls */}
           <div className="hidden items-center gap-3 sm:flex">
             {user ? (
               <>
                 <div className="hidden text-right md:block">
                   <p className="text-xs font-semibold text-black/40">
-                    Signed in
+                    {user.userType === 'admin'
+                      ? 'Administrator'
+                      : 'Signed in'}
                   </p>
 
                   <p className="max-w-[160px] truncate text-sm font-semibold">
@@ -117,22 +122,21 @@ export default function AppLayout() {
               <>
                 <Link
                   className="btn-secondary"
-                  to="/login"
+                  to="/login/user"
                 >
-                  Login
+                  User Login
                 </Link>
 
                 <Link
                   className="btn-primary"
-                  to="/register"
+                  to="/login/admin"
                 >
-                  Get started
+                  Admin Portal
                 </Link>
               </>
             )}
           </div>
 
-          {/* Mobile button */}
           <button
             onClick={() => setMobileOpen((value) => !value)}
             className="flex h-10 w-10 items-center justify-center rounded-full border border-black/10 bg-white lg:hidden"
@@ -146,14 +150,11 @@ export default function AppLayout() {
           </button>
         </div>
 
-        {/* =========================
-            MOBILE MENU
-        ========================== */}
         {mobileOpen && (
           <div className="border-t border-black/10 bg-[#f4f1ea] px-5 py-4 lg:hidden">
             {user ? (
               <div className="space-y-1">
-                {nav.map(([label, to, Icon]) => (
+                {currentNav.map(([label, to, Icon]) => (
                   <NavLink
                     key={to}
                     to={to}
@@ -183,21 +184,21 @@ export default function AppLayout() {
                 </button>
               </div>
             ) : (
-              <div className="flex gap-2 pb-2">
+              <div className="grid gap-2 pb-2">
                 <Link
-                  to="/login"
+                  to="/login/user"
                   onClick={() => setMobileOpen(false)}
-                  className="btn-secondary flex-1"
+                  className="btn-secondary"
                 >
-                  Login
+                  User Login
                 </Link>
 
                 <Link
-                  to="/register"
+                  to="/login/admin"
                   onClick={() => setMobileOpen(false)}
-                  className="btn-primary flex-1"
+                  className="btn-primary"
                 >
-                  Get started
+                  Admin Portal
                 </Link>
               </div>
             )}
@@ -205,9 +206,6 @@ export default function AppLayout() {
         )}
       </header>
 
-      {/* =========================
-          PAGE CONTENT
-      ========================== */}
       <Outlet />
     </div>
   );

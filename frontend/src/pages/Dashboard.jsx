@@ -29,9 +29,11 @@ export default function Dashboard() {
   useEffect(() => {
     api('/scholarships')
       .then((data) => {
-        setScholarships(data.scholarships.slice(0, 4));
+        setScholarships(data.scholarships?.slice(0, 4) || []);
       })
-      .catch(() => {});
+      .catch(() => {
+        setScholarships([]);
+      });
   }, []);
 
   async function runFinder() {
@@ -39,47 +41,56 @@ export default function Dashboard() {
       setLoading(true);
       setFinder(null);
 
-      if (choice === 'Scholarship' && scholarships[0]) {
+      if (choice === 'Scholarship') {
+        if (!scholarships.length) {
+          setFinder([]);
+          return;
+        }
+
+        const profile = user?.profile || {};
+
         const results = await Promise.all(
-          scholarships.slice(0, 3).map(async (s) => ({
-            scholarship: s,
-            result: (
-              await api(
-                `/scholarships/${s._id}/check-eligibility`,
-                {
-                  method: 'POST',
-                  body: JSON.stringify(user.profile || {}),
-                }
-              )
-            ).result,
-          }))
+          scholarships.slice(0, 3).map(async (scholarship) => {
+            const response = await api(
+              `/scholarships/${scholarship._id}/check-eligibility`,
+              {
+                method: 'POST',
+                body: JSON.stringify(profile),
+              }
+            );
+
+            return {
+              scholarship,
+              result: response.result,
+            };
+          })
         );
 
         setFinder(results);
-      } else {
-        const category = choice.toLowerCase().split(' ')[0];
-
-        const data = await api(
-          `/loans/${
-            category === 'education'
-              ? 'education'
-              : category === 'home'
-                ? 'home'
-                : 'car'
-          }`
-        );
-
-        setFinder(
-          data.loans.slice(0, 3).map((loan, index) => ({
-            loan,
-            result: {
-              score: 92 - index * 7,
-              status: 'informational match',
-            },
-          }))
-        );
+        return;
       }
-    } catch {
+
+      let category = 'car';
+
+      if (choice === 'Education Loan') {
+        category = 'education';
+      } else if (choice === 'Home Loan') {
+        category = 'home';
+      }
+
+      const data = await api(`/loans/${category}`);
+
+      setFinder(
+        (data.loans || []).slice(0, 3).map((loan, index) => ({
+          loan,
+          result: {
+            score: 92 - index * 7,
+            status: 'informational match',
+          },
+        }))
+      );
+    } catch (error) {
+      console.error('Support Finder error:', error);
       setFinder([]);
     } finally {
       setLoading(false);
@@ -94,9 +105,7 @@ export default function Dashboard() {
       title={`Welcome back, ${firstName}.`}
       subtitle="Your financial discovery workspace — recommendations, eligibility matches and important opportunities in one place."
     >
-      {/* =====================================================
-          TOP STATS
-      ====================================================== */}
+      {/* TOP STATS */}
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         {[
           {
@@ -178,14 +187,10 @@ export default function Dashboard() {
         )}
       </div>
 
-      {/* =====================================================
-          MAIN DASHBOARD
-      ====================================================== */}
+      {/* MAIN DASHBOARD */}
       <div className="mt-8 grid gap-6 xl:grid-cols-[1.35fr_0.65fr]">
 
-        {/* =============================================
-            MATCHES
-        ============================================== */}
+        {/* SCHOLARSHIP MATCHES */}
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -223,10 +228,10 @@ export default function Dashboard() {
                 No scholarship opportunities were loaded yet.
               </div>
             ) : (
-              scholarships.map((s, index) => (
+              scholarships.map((scholarship, index) => (
                 <Link
-                  key={s._id}
-                  to={`/scholarships/${s._id}`}
+                  key={scholarship._id}
+                  to={`/scholarships/${scholarship._id}`}
                   className="group block rounded-2xl border border-white/10 bg-white/[0.035] p-5 transition duration-300 hover:bg-white/[0.07]"
                 >
                   <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
@@ -237,27 +242,26 @@ export default function Dashboard() {
                         </span>
 
                         <h3 className="truncate text-base font-semibold">
-                          {s.title}
+                          {scholarship.title}
                         </h3>
                       </div>
 
                       <p className="mt-2 line-clamp-2 text-sm leading-6 text-white/45">
-                        {s.benefits}
+                        {scholarship.benefits}
                       </p>
                     </div>
 
                     <div className="shrink-0">
                       <span className="rounded-full bg-white/[0.06] px-3 py-1.5 text-xs font-semibold text-white/60">
-                        Deadline{' '}
-                        {formatDate(s.applicationDeadline)}
+                        Deadline {formatDate(scholarship.applicationDeadline)}
                       </span>
                     </div>
                   </div>
 
                   <div className="mt-4 border-t border-white/10 pt-4">
                     <TrustNotice
-                      {...s}
-                      label={s.dataLabel}
+                      {...scholarship}
+                      label={scholarship.dataLabel}
                     />
                   </div>
                 </Link>
@@ -266,9 +270,7 @@ export default function Dashboard() {
           </div>
         </motion.section>
 
-        {/* =============================================
-            FINDER
-        ============================================== */}
+        {/* SUPPORT FINDER */}
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -311,8 +313,8 @@ export default function Dashboard() {
             <select
               className="field"
               value={choice}
-              onChange={(e) => {
-                setChoice(e.target.value);
+              onChange={(event) => {
+                setChoice(event.target.value);
                 setFinder(null);
               }}
             >
@@ -398,13 +400,15 @@ export default function Dashboard() {
                 {finder.map((item, index) => {
                   const title =
                     item.scholarship?.title ||
-                    item.loan?.productName;
+                    item.loan?.productName ||
+                    'Financial opportunity';
 
                   return (
                     <motion.div
                       key={
                         item.scholarship?._id ||
-                        item.loan?._id
+                        item.loan?._id ||
+                        index
                       }
                       initial={{
                         opacity: 0,
@@ -426,13 +430,13 @@ export default function Dashboard() {
                           </p>
 
                           <p className="mt-1 text-xs text-black/45">
-                            {item.result.status}
+                            {item.result?.status || 'Match found'}
                           </p>
                         </div>
 
                         <div className="rounded-full bg-[#dcebd8] px-3 py-1.5">
                           <span className="text-xs font-bold text-[#375b32]">
-                            {item.result.score}% match
+                            {item.result?.score ?? 0}% match
                           </span>
                         </div>
                       </div>
@@ -459,9 +463,7 @@ export default function Dashboard() {
         </motion.section>
       </div>
 
-      {/* =====================================================
-          PROFILE SNAPSHOT
-      ====================================================== */}
+      {/* PROFILE SNAPSHOT */}
       <motion.section
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -496,8 +498,14 @@ export default function Dashboard() {
 
           <div className="grid gap-3 sm:grid-cols-3">
             {[
-              ['Education', user?.profile?.education || 'Not added'],
-              ['State', user?.profile?.state || 'Not added'],
+              [
+                'Education',
+                user?.profile?.education || 'Not added',
+              ],
+              [
+                'State',
+                user?.profile?.state || 'Not added',
+              ],
               [
                 'Annual income',
                 user?.profile?.annualIncome
@@ -524,9 +532,7 @@ export default function Dashboard() {
         </div>
       </motion.section>
 
-      {/* =====================================================
-          TRUST FOOTER
-      ====================================================== */}
+      {/* TRUST FOOTER */}
       <div className="mt-8 flex items-center gap-3 rounded-2xl border border-black/10 bg-white px-5 py-4">
         <div className="rounded-xl bg-[#dcebd8] p-2">
           <CheckCircle2

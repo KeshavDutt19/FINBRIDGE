@@ -25,11 +25,22 @@ const profileSchema = new mongoose.Schema(
 const userSchema = new mongoose.Schema(
   {
     name: { type: String, required: true, trim: true },
-    email: { type: String, required: true, unique: true, lowercase: true, trim: true },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+      trim: true
+    },
     passwordHash: { type: String, required: true },
     phone: { type: String, required: true, trim: true },
-    userType: { type: String, enum: ['student', 'parent', 'professional', 'admin'], default: 'student' },
-    profile: { type: profileSchema, default: {} }
+    userType: {
+      type: String,
+      enum: ['student', 'parent', 'professional', 'admin'],
+      default: 'student'
+    },
+    profile: { type: profileSchema, default: {} },
+    lastActiveAt: { type: Date, default: null }
   },
   { timestamps: true }
 );
