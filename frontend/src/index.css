@@ -16,7 +16,6 @@
 
   --fb-green: #dcebd8;
   --fb-green-dark: #375b32;
-
   --fb-accent: #d7ee82;
 }
 
@@ -57,6 +56,10 @@ img {
 }
 
 @layer components {
+  /* =========================
+     EXISTING FINBRIDGE STYLES
+  ========================= */
+
   .trust-strip {
     @apply rounded-2xl border border-black/10 bg-white px-4 py-3 text-xs font-medium text-black/60;
   }
@@ -86,10 +89,62 @@ img {
   }
 
   .editorial-title {
-    @apply font-medium tracking-[-0.05em] leading-[0.95];
+    @apply font-medium leading-[0.95] tracking-[-0.05em];
   }
 
   .editorial-italic {
     font-family: 'DM Serif Display', Georgia, serif;
+  }
+
+  /* =========================
+     PREMIUM FINBRIDGE CARDS
+  ========================= */
+
+  .fb-card {
+    @apply relative overflow-hidden rounded-[1.5rem] border border-black/10 bg-white shadow-[0_12px_40px_rgba(0,0,0,0.05)] transition-all duration-300 ease-out;
+  }
+
+  .fb-card-hover {
+    @apply hover:-translate-y-1 hover:border-black/15 hover:shadow-[0_20px_55px_rgba(0,0,0,0.09)];
+  }
+
+  .fb-card-dark {
+    @apply relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#11110f] text-white shadow-[0_20px_60px_rgba(0,0,0,0.16)];
+  }
+
+  .fb-card-soft {
+    @apply rounded-2xl border border-black/5 bg-[#f7f4ee] transition-all duration-300 hover:bg-[#f3efe7];
+  }
+
+  .fb-icon {
+    @apply flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-black/5 bg-[#f4f1ea];
+  }
+
+  .fb-icon-dark {
+    @apply flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/[0.06];
+  }
+
+  .fb-eyebrow {
+    @apply text-[11px] font-bold uppercase tracking-[0.2em] text-black/35;
+  }
+
+  .fb-eyebrow-dark {
+    @apply text-[11px] font-bold uppercase tracking-[0.2em] text-white/35;
+  }
+
+  .fb-number {
+    @apply text-4xl font-semibold tracking-[-0.06em] text-[#11110f];
+  }
+
+  .fb-number-dark {
+    @apply text-4xl font-semibold tracking-[-0.06em] text-white;
+  }
+
+  .fb-divider {
+    @apply border-t border-black/10;
+  }
+
+  .fb-divider-dark {
+    @apply border-t border-white/10;
   }
 }
