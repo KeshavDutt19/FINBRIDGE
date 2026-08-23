@@ -1,5 +1,6 @@
 import dns from "dns";
 
+
 dns.setServers(["8.8.8.8", "1.1.1.1"]);
 
 import nearbyBanksRoutes from './routes/nearbyBanks.js';
@@ -15,6 +16,10 @@ import loanRoutes from './routes/loans.js';
 import applicationRoutes from './routes/applications.js';
 import adminRoutes from './routes/admin.js';
 import { syncScholarships } from './services/ingestion/sync.js';
+import loanIntelligenceRoutes from './routes/loanIntelligence.js';
+import {
+  updateAllLoanInsights
+} from './services/loanIntelligence/updateInsights.js';
 
 // dotenv.config();
 
@@ -41,6 +46,10 @@ app.get('/api/health', (req, res) => res.json({ ok: true, name: 'FinBridge API' 
 app.use('/api/auth', authRoutes);
 app.use('/api/scholarships', scholarshipRoutes);
 app.use('/api/loans', loanRoutes);
+app.use(
+  '/api/loan-intelligence',
+  loanIntelligenceRoutes
+);
 app.use('/api/applications', applicationRoutes);
 app.use('/api/admin', adminRoutes);
 
@@ -62,5 +71,31 @@ if (process.env.ENABLE_SCHEDULER !== 'false') {
     syncScholarships().catch(error => console.error('Scheduled scholarship sync failed', error.message));
   });
 }
+
+if (
+  process.env.LOAN_INSIGHT_ENABLED === 'true'
+) {
+  cron.schedule(
+    '30 3 * * *',
+    () => {
+      updateAllLoanInsights({
+        limit: 20
+      })
+        .then((results) => {
+          console.log(
+            'Loan intelligence update completed:',
+            results
+          );
+        })
+        .catch((error) => {
+          console.error(
+            'Loan intelligence update failed:',
+            error.message
+          );
+        });
+    }
+  );
+}
+
 
 app.listen(port, () => console.log(`FinBridge API running on http://localhost:${port}`));
