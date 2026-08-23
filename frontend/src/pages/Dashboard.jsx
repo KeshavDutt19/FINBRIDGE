@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-
+import NearbyBankOffers from '../components/NearbyBankOffers.jsx';
 import {
   AlertCircle,
   ArrowRight,
@@ -922,7 +922,7 @@ export default function Dashboard() {
         </motion.section>
 
       </div>
-
+<NearbyBankOffers />
       {/* =====================================================
           PROFILE SNAPSHOT
       ===================================================== */}
