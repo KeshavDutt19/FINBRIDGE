@@ -7,7 +7,12 @@ const profileSchema = new mongoose.Schema(
     city: String,
     gender: String,
     category: String,
-    disabilityStatus: { type: Boolean, default: false },
+
+    disabilityStatus: {
+      type: Boolean,
+      default: false
+    },
+
     educationLevel: String,
     course: String,
     institution: String,
@@ -17,14 +22,26 @@ const profileSchema = new mongoose.Schema(
     employmentStatus: String,
     loanType: String,
     desiredAmount: Number,
-    preferredTenure: Number
+    preferredTenure: Number,
+
+    // Primary bank used by the user
+    primaryBank: {
+      type: String,
+      default: '',
+      trim: true
+    }
   },
   { _id: false }
 );
 
 const userSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true, trim: true },
+    name: {
+      type: String,
+      required: true,
+      trim: true
+    },
+
     email: {
       type: String,
       required: true,
@@ -32,15 +49,38 @@ const userSchema = new mongoose.Schema(
       lowercase: true,
       trim: true
     },
-    passwordHash: { type: String, required: true },
-    phone: { type: String, required: true, trim: true },
+
+    passwordHash: {
+      type: String,
+      required: true
+    },
+
+    phone: {
+      type: String,
+      required: true,
+      trim: true
+    },
+
     userType: {
       type: String,
-      enum: ['student', 'parent', 'professional', 'admin'],
+      enum: [
+        'student',
+        'parent',
+        'professional',
+        'admin'
+      ],
       default: 'student'
     },
-    profile: { type: profileSchema, default: {} },
-    lastActiveAt: { type: Date, default: null }
+
+    profile: {
+      type: profileSchema,
+      default: {}
+    },
+
+    lastActiveAt: {
+      type: Date,
+      default: null
+    }
   },
   { timestamps: true }
 );
