@@ -381,7 +381,7 @@ function buildPros(themes) {
       (theme) =>
         theme.positiveScore > 0 &&
         theme.positiveScore >
-          theme.negativeScore
+        theme.negativeScore
     )
     .sort(
       (a, b) =>
@@ -408,7 +408,7 @@ function buildCons(themes) {
       (theme) =>
         theme.negativeScore > 0 &&
         theme.negativeScore >
-          theme.positiveScore
+        theme.positiveScore
     )
     .sort(
       (a, b) =>
@@ -435,20 +435,30 @@ function calculateConfidence({
   pros,
   cons
 }) {
-  let score = 20;
+  if (sourceCount === 0) {
+    return 0;
+  }
 
+  let score = 10;
+
+  // More sources increase evidence coverage,
+  // but are capped so large numbers don't
+  // automatically create false confidence.
   score += Math.min(
-    sourceCount * 4,
-    28
+    sourceCount * 3,
+    24
   );
 
+  // Direct borrower experiences are much
+  // stronger than generic discussions.
   score += Math.min(
-    directExperienceCount * 7,
-    28
+    directExperienceCount * 10,
+    40
   );
 
+  // Distinct analysed themes add coverage.
   score += Math.min(
-    (pros.length + cons.length) * 4,
+    (pros.length + cons.length) * 5,
     20
   );
 
@@ -478,11 +488,19 @@ function buildConclusion({
 
   const totalSources = sources.length;
 
-  if (!totalSources) {
+  if (
+    totalSources === 0 ||
+    (
+      pros.length === 0 &&
+      cons.length === 0
+    )
+  ) {
     return {
       text:
-        'There is not enough accessible community evidence to form a reliable borrower-experience conclusion.',
+        'There is not enough reliable community evidence to form a meaningful borrower-experience conclusion yet. Treat the available discussion as informational and verify current terms with the lender.',
+
       tone: 'insufficient',
+
       confidence: 10
     };
   }
@@ -552,10 +570,10 @@ function buildConclusion({
   const themeSentence =
     importantThemes.length
       ? `The most discussed areas are ${importantThemes
-          .map((theme) =>
-            theme.label.toLowerCase()
-          )
-          .join(', ')}.`
+        .map((theme) =>
+          theme.label.toLowerCase()
+        )
+        .join(', ')}.`
       : '';
 
   let caution;
@@ -575,16 +593,14 @@ function buildConclusion({
 
   if (redditCount) {
     sourceParts.push(
-      `${redditCount} Reddit source${
-        redditCount === 1 ? '' : 's'
+      `${redditCount} Reddit source${redditCount === 1 ? '' : 's'
       }`
     );
   }
 
   if (quoraCount) {
     sourceParts.push(
-      `${quoraCount} Quora source${
-        quoraCount === 1 ? '' : 's'
+      `${quoraCount} Quora source${quoraCount === 1 ? '' : 's'
       }`
     );
   }
@@ -592,9 +608,8 @@ function buildConclusion({
   const sourceSentence =
     sourceParts.length
       ? sourceParts.join(' and ')
-      : `${totalSources} community source${
-          totalSources === 1 ? '' : 's'
-        }`;
+      : `${totalSources} community source${totalSources === 1 ? '' : 's'
+      }`;
 
   const directSentence =
     directExperienceCount
@@ -639,11 +654,36 @@ export function generateProsCons({
   const pros = buildPros(themes);
   const cons = buildCons(themes);
 
+  const directExperienceCount =
+    cleanedSources.filter(
+      (source) =>
+        classifySource(source).type ===
+        'direct_experience'
+    ).length;
+
+  const hasMeaningfulEvidence =
+    cleanedSources.length > 0 &&
+    (
+      directExperienceCount > 0 ||
+      pros.length > 0 ||
+      cons.length > 0
+    );
+
+  const safePros =
+    hasMeaningfulEvidence
+      ? pros
+      : [];
+
+  const safeCons =
+    hasMeaningfulEvidence
+      ? cons
+      : [];
+
   const conclusion = buildConclusion({
     sources: cleanedSources,
     themes,
-    pros,
-    cons
+    pros: safePros,
+    cons: safeCons
   });
 
   const filteredThemes = themes
@@ -662,11 +702,11 @@ export function generateProsCons({
     }));
 
   return {
-    pros: pros.map(
+    pros: safePros.map(
       (item) => item.text
     ),
 
-    cons: cons.map(
+    cons: safeCons.map(
       (item) => item.text
     ),
 
