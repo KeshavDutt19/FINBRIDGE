@@ -1,29 +1,69 @@
 import {
   useEffect,
-  useState,
+  useState
 } from 'react';
 
 import {
-  AlertTriangle,
-  Database,
-  GraduationCap,
   RefreshCw,
-  ShieldCheck,
-  TrendingUp,
+  Users,
+  CreditCard,
+  IndianRupee,
+  Activity,
+  Eye,
+  Pencil,
+  Save,
+  X
 } from 'lucide-react';
 
-import PageShell from '../components/PageShell.jsx';
+import {
+  AreaChart,
+  Area,
+  BarChart,
+  Bar,
+  PieChart,
+  Pie,
+  Cell,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer
+} from 'recharts';
 
+import PageShell from '../components/PageShell.jsx';
 import {
   api,
-  formatDate,
+  formatDate
 } from '../lib/api.js';
 
-import MetricCard from '../components/cards/MetricCard.jsx';
-import AnalyticsCard from '../components/cards/AnalyticsCard.jsx';
+function formatMonth(item) {
+  if (!item?._id) {
+    return '—';
+  }
+
+  return `${String(item._id.month).padStart(
+    2,
+    '0'
+  )}/${item._id.year}`;
+}
+
+function formatCurrency(value) {
+  return `₹${Number(value || 0).toLocaleString(
+    'en-IN'
+  )}`;
+}
 
 export default function Admin() {
-  const [stats, setStats] =
+  const [stats, setStats] = useState(null);
+  const [analytics, setAnalytics] =
+    useState(null);
+
+  const [users, setUsers] = useState([]);
+
+  const [selectedUser, setSelectedUser] =
+    useState(null);
+
+  const [editingUser, setEditingUser] =
     useState(null);
 
   const [message, setMessage] =
@@ -32,15 +72,27 @@ export default function Admin() {
   const [loading, setLoading] =
     useState(true);
 
-  async function load() {
-    setLoading(true);
+  const [saving, setSaving] =
+    useState(false);
 
+  async function loadDashboard() {
     try {
-      const data =
-        await api('/admin/stats');
-
-      setStats(data);
+      setLoading(true);
       setMessage('');
+
+      const [
+        statsData,
+        analyticsData,
+        usersData
+      ] = await Promise.all([
+        api('/admin/stats'),
+        api('/admin/analytics'),
+        api('/admin/users')
+      ]);
+
+      setStats(statsData);
+      setAnalytics(analyticsData);
+      setUsers(usersData.users || []);
     } catch (error) {
       setMessage(error.message);
     } finally {
@@ -48,547 +100,805 @@ export default function Admin() {
     }
   }
 
-  async function sync(type) {
+  useEffect(() => {
+    loadDashboard();
+  }, []);
+
+  async function viewUser(id) {
     try {
-
-      setMessage(
-        `Syncing ${type}...`
-      );
-
       const data =
-        await api(
-          `/admin/sync-${type}`,
-          {
-            method: 'POST',
-            body: '{}',
-          }
-        );
+        await api(`/admin/users/${id}`);
 
-      setMessage(
-        `${type} sync complete: ${data.newCount} new, ${data.updatedCount} updated, ${data.failedSources.length} unavailable source(s).`
-      );
-
-      await load();
-
+      setSelectedUser(data.user);
     } catch (error) {
-
-      setMessage(
-        error.message
-      );
-
+      setMessage(error.message);
     }
   }
 
-  useEffect(() => {
-    load();
-  }, []);
+  async function saveUser(event) {
+    event.preventDefault();
+
+    try {
+      setSaving(true);
+
+      const data =
+        await api(
+          `/admin/users/${editingUser._id}`,
+          {
+            method: 'PUT',
+            body: JSON.stringify({
+              name: editingUser.name,
+              email: editingUser.email,
+              phone: editingUser.phone,
+              userType:
+                editingUser.userType,
+              profile:
+                editingUser.profile || {}
+            })
+          }
+        );
+
+      setUsers((current) =>
+        current.map((user) =>
+          user._id === data.user._id
+            ? data.user
+            : user
+        )
+      );
+
+      setSelectedUser(data.user);
+      setEditingUser(null);
+
+      setMessage(
+        'User information updated successfully.'
+      );
+    } catch (error) {
+      setMessage(error.message);
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  if (loading) {
+    return (
+      <PageShell
+        title="Admin Dashboard"
+        eyebrow="Administration"
+        subtitle="Loading platform intelligence..."
+      />
+    );
+  }
 
   return (
     <PageShell
       title="Admin Dashboard"
-      eyebrow="Data monitoring"
-      subtitle="Monitor data freshness, source availability and normalized sync status."
+      eyebrow="Administration"
+      subtitle="Monitor users, financial activity, platform performance and data operations from one secure workspace."
       actions={
         <button
           className="btn-secondary"
-          onClick={load}
+          onClick={loadDashboard}
         >
           <RefreshCw size={16} />
-          Refresh Data
+          Refresh
         </button>
       }
     >
-
       {message && (
-        <div
-          className="
-            mb-6
-            rounded-2xl
-            border
-            border-black/[0.08]
-            bg-white
-            p-4
-            text-sm
-            font-semibold
-            shadow-[0_8px_25px_rgba(0,0,0,0.03)]
-          "
-        >
+        <div className="mb-6 rounded-2xl border border-black/10 bg-white p-4 text-sm font-semibold">
           {message}
         </div>
       )}
 
-      {/* Stats */}
-
-      <div
-        className="
-          grid
-          gap-4
-          sm:grid-cols-2
-          lg:grid-cols-3
-        "
-      >
-
-        <MetricCard
-          title="Total Users"
-          value={
-            loading
-              ? '—'
-              : stats?.totalUsers ?? '--'
-          }
-          description="Registered platform accounts"
-          icon={ShieldCheck}
-          to="/admin"
-          accent
-        />
-
-        <MetricCard
-          title="Scholarships"
-          value={
-            loading
-              ? '—'
-              : stats?.totalScholarships ?? '--'
-          }
-          description="Scholarship records currently available"
-          icon={GraduationCap}
-          to="/admin"
-        />
-
-        <MetricCard
-          title="Loan Products"
-          value={
-            loading
-              ? '—'
-              : stats?.totalLoanProducts ?? '--'
-          }
-          description="Normalized lender products"
-          icon={Database}
-          to="/admin"
-        />
-
-      </div>
-
-      {/* Monitoring cards */}
-
-      <div className="
-        mt-6
-        grid
-        gap-5
-        lg:grid-cols-3
-      ">
-
-        <AnalyticsCard
-          title="Scholarship freshness"
-          subtitle="Most recent sync and oldest available record"
-        >
-
-          <div className="grid gap-3">
-
-            <div className="
-              rounded-xl
-              bg-[#f7f4ee]
-              p-4
-            ">
-
-              <p className="text-[11px] font-bold uppercase tracking-wide text-black/35">
-                Last sync
-              </p>
-
-              <p className="mt-2 text-sm font-semibold">
-                {formatDate(
-                  stats?.lastScholarshipSync?.finishedAt
-                )}
-              </p>
-
-            </div>
-
-            <div className="
-              rounded-xl
-              bg-[#f7f4ee]
-              p-4
-            ">
-
-              <p className="text-[11px] font-bold uppercase tracking-wide text-black/35">
-                Oldest record
-              </p>
-
-              <p className="mt-2 text-sm font-semibold">
-                {formatDate(
-                  stats?.dataFreshness?.oldestScholarship
-                )}
-              </p>
-
-            </div>
-
-          </div>
-
-        </AnalyticsCard>
-
-        <AnalyticsCard
-          title="Loan data freshness"
-          subtitle="Latest lender update and oldest product record"
-        >
-
-          <div className="grid gap-3">
-
-            <div className="
-              rounded-xl
-              bg-[#f7f4ee]
-              p-4
-            ">
-
-              <p className="text-[11px] font-bold uppercase tracking-wide text-black/35">
-                Last update
-              </p>
-
-              <p className="mt-2 text-sm font-semibold">
-                {formatDate(
-                  stats?.lastLoanSync?.finishedAt
-                )}
-              </p>
-
-            </div>
-
-            <div className="
-              rounded-xl
-              bg-[#f7f4ee]
-              p-4
-            ">
-
-              <p className="text-[11px] font-bold uppercase tracking-wide text-black/35">
-                Oldest record
-              </p>
-
-              <p className="mt-2 text-sm font-semibold">
-                {formatDate(
-                  stats?.dataFreshness?.oldestLoan
-                )}
-              </p>
-
-            </div>
-
-          </div>
-
-        </AnalyticsCard>
-
-        <AnalyticsCard
-          title="Failed sources"
-          subtitle="Sources requiring attention"
-        >
-
-          <div
-            className={`
-              flex
-              min-h-[150px]
-              flex-col
-              items-center
-              justify-center
-              rounded-xl
-              p-5
-              text-center
-              ${
-                stats?.failedSyncs?.length
-                  ? 'bg-amber-50'
-                  : 'bg-[#dcebd8]'
-              }
-            `}
-          >
-
-            {stats?.failedSyncs?.length ? (
-              <>
-                <AlertTriangle
-                  size={25}
-                  className="text-amber-600"
-                />
-
-                <p className="
-                  mt-3
-                  text-2xl
-                  font-bold
-                  text-amber-900
-                ">
-                  {stats.failedSyncs.length}
-                </p>
-
-                <p className="
-                  mt-1
-                  text-xs
-                  text-amber-900/60
-                ">
-                  failed or partial syncs
-                </p>
-              </>
-            ) : (
-              <>
-                <TrendingUp
-                  size={25}
-                  className="text-[#375b32]"
-                />
-
-                <p className="
-                  mt-3
-                  text-sm
-                  font-semibold
-                  text-[#375b32]
-                ">
-                  All monitored sources healthy
-                </p>
-              </>
-            )}
-
-          </div>
-
-        </AnalyticsCard>
-
-      </div>
-
-      {/* Sync controls */}
-
-      <section
-        className="
-          fb-card-dark
-          mt-6
-          p-6
-        "
-      >
-
-        <div
-          className="
-            flex
-            flex-col
-            justify-between
-            gap-5
-            sm:flex-row
-            sm:items-center
-          "
-        >
-
-          <div>
-
-            <p className="fb-eyebrow-dark">
-              Data operations
-            </p>
-
-            <h2 className="
-              mt-2
-              text-2xl
-              font-semibold
-              tracking-[-0.03em]
-            ">
-              Manage source synchronization
-            </h2>
-
-            <p className="
-              mt-2
-              max-w-2xl
-              text-sm
-              leading-6
-              text-white/45
-            ">
-              Refresh normalized scholarship and loan data
-              without leaving the admin dashboard.
-            </p>
-
-          </div>
-
-          <div
-            className="
-              flex
-              flex-wrap
-              gap-2
-            "
-          >
-
-            <button
-              className="
-                inline-flex
-                items-center
-                gap-2
-                rounded-full
-                bg-[#d7ee82]
-                px-4
-                py-2.5
-                text-sm
-                font-bold
-                text-[#11110f]
-                transition
-                hover:bg-white
-              "
-              onClick={() =>
-                sync('scholarships')
-              }
-            >
-              Sync scholarships
-            </button>
-
-            <button
-              className="
-                inline-flex
-                items-center
-                gap-2
-                rounded-full
-                border
-                border-white/15
-                bg-white/[0.05]
-                px-4
-                py-2.5
-                text-sm
-                font-semibold
-                text-white
-                transition
-                hover:bg-white/[0.1]
-              "
-              onClick={() =>
-                sync('loans')
-              }
-            >
-              Sync loans
-            </button>
-
-          </div>
-
-        </div>
-
-      </section>
-
-      {/* Failed sources */}
-
-      <section className="fb-card mt-6 p-6">
-
-        <div className="
-          flex
-          items-center
-          justify-between
-        ">
-
-          <div>
-
-            <p className="fb-eyebrow">
-              Source health
-            </p>
-
-            <h2 className="
-              mt-2
-              text-2xl
-              font-semibold
-            ">
-              Failed source logs
-            </h2>
-
-          </div>
-
-          <AlertTriangle
-            size={20}
-            className={
-              stats?.failedSyncs?.length
-                ? 'text-amber-500'
-                : 'text-black/20'
-            }
-          />
-
-        </div>
-
-        <div className="mt-5 grid gap-3">
-
-          {(stats?.failedSyncs || []).length === 0 ? (
-
+      {/* SUMMARY CARDS */}
+
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        {[
+          [
+            'Registered Users',
+            stats?.totalUsers || 0,
+            Users
+          ],
+          [
+            'Loan Applications',
+            stats?.totalLoanApplications || 0,
+            CreditCard
+          ],
+          [
+            'Scholarships',
+            stats?.totalScholarships || 0,
+            Activity
+          ],
+          [
+            'Loan Products',
+            stats?.totalLoanProducts || 0,
+            IndianRupee
+          ]
+        ].map(
+          ([label, value, Icon]) => (
             <div
-              className="
-                rounded-xl
-                border
-                border-dashed
-                border-black/10
-                bg-[#faf8f3]
-                p-6
-                text-center
-              "
+              key={label}
+              className="rounded-[1.5rem] border border-black/10 bg-white p-6"
             >
-              <p className="font-semibold">
-                No failed sync records
-              </p>
-
-              <p className="
-                mt-1
-                text-xs
-                text-black/40
-              ">
-                Source monitoring looks healthy.
-              </p>
-            </div>
-
-          ) : (
-
-            stats.failedSyncs.map((log) => (
-
-              <div
-                key={log._id}
-                className="
-                  rounded-2xl
-                  border
-                  border-amber-200
-                  bg-amber-50
-                  p-5
-                "
-              >
-
-                <div className="
-                  flex
-                  items-start
-                  justify-between
-                  gap-4
-                ">
-
-                  <div>
-
-                    <p className="
-                      font-bold
-                      text-amber-900
-                    ">
-                      {log.type} · {log.status}
-                    </p>
-
-                    <p className="
-                      mt-2
-                      text-sm
-                      leading-6
-                      text-amber-900/70
-                    ">
-                      {log.failedSources
-                        ?.map(
-                          (source) =>
-                            `${source.sourceName}: ${source.reason}`
-                        )
-                        .join('; ') ||
-                        log.message}
-                    </p>
-
-                  </div>
-
-                  <span className="
-                    shrink-0
-                    rounded-full
-                    bg-white/60
-                    px-3
-                    py-1
-                    text-[10px]
-                    font-bold
-                    uppercase
-                    tracking-wide
-                    text-amber-800
-                  ">
-                    attention
-                  </span>
-
+              <div className="flex items-center justify-between">
+                <div className="rounded-2xl bg-[#f4f1ea] p-3">
+                  <Icon
+                    size={20}
+                    className="text-[#11110f]"
+                  />
                 </div>
-
               </div>
 
-            ))
-          )}
+              <p className="mt-6 text-3xl font-medium tracking-[-0.04em]">
+                {value}
+              </p>
 
+              <p className="mt-2 text-sm font-semibold">
+                {label}
+              </p>
+            </div>
+          )
+        )}
+      </div>
+
+      {/* FINANCIAL OVERVIEW */}
+
+      <section className="mt-8 rounded-[2rem] border border-black/10 bg-[#11110f] p-6 text-white sm:p-8">
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/40">
+          Financial overview
+        </p>
+
+        <div className="mt-3 flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
+          <div>
+            <h2 className="text-4xl font-medium tracking-[-0.05em]">
+              {formatCurrency(
+                analytics?.totalLoanAmount
+              )}
+            </h2>
+
+            <p className="mt-2 text-sm text-white/45">
+              Total loan amount requested through
+              FinBridge applications
+            </p>
+          </div>
         </div>
-
       </section>
 
+      {/* CHARTS */}
+
+      <div className="mt-8 grid gap-6 lg:grid-cols-2">
+        {/* MONTHLY ACTIVE USERS */}
+
+        <section className="rounded-[2rem] border border-black/10 bg-white p-6">
+          <h2 className="text-xl font-semibold">
+            Monthly Active Users
+          </h2>
+
+          <p className="mt-1 text-sm text-black/45">
+            Users active during each month
+          </p>
+
+          <div className="mt-6 h-[300px]">
+            <ResponsiveContainer
+              width="100%"
+              height="100%"
+            >
+              <AreaChart
+                data={
+                  analytics?.monthlyActiveUsers || []
+                }
+              >
+                <CartesianGrid
+                  strokeDasharray="3 3"
+                />
+
+                <XAxis
+                  dataKey={(item) =>
+                    formatMonth(item)
+                  }
+                />
+
+                <YAxis />
+
+                <Tooltip />
+
+                <Area
+                  type="monotone"
+                  dataKey="users"
+                  stroke="#375b32"
+                  fill="#dcebd8"
+                />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+        </section>
+
+        {/* MONTHLY LOANS */}
+
+        <section className="rounded-[2rem] border border-black/10 bg-white p-6">
+          <h2 className="text-xl font-semibold">
+            Monthly Loan Applications
+          </h2>
+
+          <p className="mt-1 text-sm text-black/45">
+            Loan requests submitted each month
+          </p>
+
+          <div className="mt-6 h-[300px]">
+            <ResponsiveContainer
+              width="100%"
+              height="100%"
+            >
+              <BarChart
+                data={
+                  analytics?.monthlyLoans || []
+                }
+              >
+                <CartesianGrid
+                  strokeDasharray="3 3"
+                />
+
+                <XAxis
+                  dataKey={(item) =>
+                    formatMonth(item)
+                  }
+                />
+
+                <YAxis />
+
+                <Tooltip />
+
+                <Bar
+                  dataKey="loans"
+                  fill="#11110f"
+                  radius={[8, 8, 0, 0]}
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </section>
+
+        {/* STATUS */}
+
+        <section className="rounded-[2rem] border border-black/10 bg-white p-6">
+          <h2 className="text-xl font-semibold">
+            Loan Status Distribution
+          </h2>
+
+          <p className="mt-1 text-sm text-black/45">
+            Approved, pending and defaulted
+            applications
+          </p>
+
+          <div className="mt-6 h-[300px]">
+            <ResponsiveContainer
+              width="100%"
+              height="100%"
+            >
+              <PieChart>
+                <Pie
+                  data={
+                    analytics?.loanStatus || []
+                  }
+                  dataKey="count"
+                  nameKey="_id"
+                  outerRadius={100}
+                  label
+                >
+                  {(analytics?.loanStatus || []).map(
+                    (entry, index) => (
+                      <Cell
+                        key={`status-${index}`}
+                        fill={[
+                          '#375b32',
+                          '#c59f66',
+                          '#9d4f4f'
+                        ][index % 3]}
+                      />
+                    )
+                  )}
+                </Pie>
+
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </section>
+
+        {/* POPULAR LOAN TYPES */}
+
+        <section className="rounded-[2rem] border border-black/10 bg-white p-6">
+          <h2 className="text-xl font-semibold">
+            Popular Loan Types
+          </h2>
+
+          <p className="mt-1 text-sm text-black/45">
+            Most requested loan categories
+          </p>
+
+          <div className="mt-6 h-[300px]">
+            <ResponsiveContainer
+              width="100%"
+              height="100%"
+            >
+              <BarChart
+                data={
+                  analytics?.popularLoanTypes || []
+                }
+                layout="vertical"
+              >
+                <CartesianGrid
+                  strokeDasharray="3 3"
+                />
+
+                <XAxis type="number" />
+
+                <YAxis
+                  type="category"
+                  dataKey="_id"
+                  width={90}
+                />
+
+                <Tooltip />
+
+                <Bar
+                  dataKey="count"
+                  fill="#596d3f"
+                  radius={[0, 8, 8, 0]}
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </section>
+      </div>
+
+      {/* USERS */}
+
+      <section className="mt-8 rounded-[2rem] border border-black/10 bg-white p-6 sm:p-8">
+        <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-black/35">
+              User management
+            </p>
+
+            <h2 className="mt-2 text-3xl font-medium tracking-[-0.04em]">
+              Registered users
+            </h2>
+          </div>
+
+          <p className="text-sm text-black/45">
+            {users.length} account(s)
+          </p>
+        </div>
+
+        <div className="mt-6 overflow-x-auto">
+          <table className="w-full min-w-[800px] text-left">
+            <thead>
+              <tr className="border-b border-black/10 text-xs uppercase tracking-[0.12em] text-black/40">
+                <th className="px-4 py-3">
+                  User
+                </th>
+
+                <th className="px-4 py-3">
+                  Type
+                </th>
+
+                <th className="px-4 py-3">
+                  Email
+                </th>
+
+                <th className="px-4 py-3">
+                  Joined
+                </th>
+
+                <th className="px-4 py-3">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {users.map((user) => (
+                <tr
+                  key={user._id}
+                  className="border-b border-black/5"
+                >
+                  <td className="px-4 py-4">
+                    <p className="font-semibold">
+                      {user.name}
+                    </p>
+
+                    <p className="text-xs text-black/40">
+                      {user.phone}
+                    </p>
+                  </td>
+
+                  <td className="px-4 py-4">
+                    <span className="rounded-full bg-[#f4f1ea] px-3 py-1 text-xs font-semibold capitalize">
+                      {user.userType}
+                    </span>
+                  </td>
+
+                  <td className="px-4 py-4 text-sm">
+                    {user.email}
+                  </td>
+
+                  <td className="px-4 py-4 text-sm text-black/50">
+                    {formatDate(
+                      user.createdAt
+                    )}
+                  </td>
+
+                  <td className="px-4 py-4">
+                    <div className="flex gap-2">
+                      <button
+                        className="btn-secondary"
+                        onClick={() =>
+                          viewUser(user._id)
+                        }
+                      >
+                        <Eye size={14} />
+                        View
+                      </button>
+
+                      <button
+                        className="btn-primary"
+                        onClick={() =>
+                          setEditingUser({
+                            ...user,
+                            profile: {
+                              ...(user.profile || {})
+                            }
+                          })
+                        }
+                      >
+                        <Pencil size={14} />
+                        Edit
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      {/* USER DETAILS */}
+
+      {selectedUser && (
+        <section className="mt-6 rounded-[2rem] border border-black/10 bg-[#e8e2d7] p-6 sm:p-8">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-black/35">
+                User profile
+              </p>
+
+              <h2 className="mt-2 text-3xl font-medium">
+                {selectedUser.name}
+              </h2>
+            </div>
+
+            <button
+              className="btn-secondary"
+              onClick={() =>
+                setSelectedUser(null)
+              }
+            >
+              <X size={15} />
+              Close
+            </button>
+          </div>
+
+          <div className="mt-6 grid gap-3 md:grid-cols-2 lg:grid-cols-4">
+            {[
+              ['Email', selectedUser.email],
+              ['Phone', selectedUser.phone],
+              ['User type', selectedUser.userType],
+              [
+                'Last active',
+                formatDate(
+                  selectedUser.lastActiveAt
+                )
+              ],
+              [
+                'Education',
+                selectedUser.profile?.educationLevel ||
+                  'Not added'
+              ],
+              [
+                'State',
+                selectedUser.profile?.state ||
+                  'Not added'
+              ],
+              [
+                'City',
+                selectedUser.profile?.city ||
+                  'Not added'
+              ],
+              [
+                'Income',
+                selectedUser.profile?.annualFamilyIncome
+                  ? formatCurrency(
+                      selectedUser.profile
+                        .annualFamilyIncome
+                    )
+                  : 'Not added'
+              ]
+            ].map(([label, value]) => (
+              <div
+                key={label}
+                className="rounded-2xl border border-black/10 bg-white p-4"
+              >
+                <p className="text-xs text-black/40">
+                  {label}
+                </p>
+
+                <p className="mt-2 text-sm font-semibold">
+                  {value}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* EDIT USER */}
+
+      {editingUser && (
+        <section className="mt-6 rounded-[2rem] border border-black/10 bg-white p-6 sm:p-8">
+          <div className="flex items-start justify-between">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-black/35">
+                Edit account
+              </p>
+
+              <h2 className="mt-2 text-3xl font-medium">
+                Update user information
+              </h2>
+            </div>
+
+            <button
+              className="btn-secondary"
+              onClick={() =>
+                setEditingUser(null)
+              }
+            >
+              <X size={15} />
+              Cancel
+            </button>
+          </div>
+
+          <form
+            onSubmit={saveUser}
+            className="mt-6 grid gap-4 md:grid-cols-2"
+          >
+            <label className="text-sm font-semibold">
+              Name
+              <input
+                className="field mt-1"
+                value={editingUser.name || ''}
+                onChange={(event) =>
+                  setEditingUser({
+                    ...editingUser,
+                    name: event.target.value
+                  })
+                }
+              />
+            </label>
+
+            <label className="text-sm font-semibold">
+              Email
+              <input
+                className="field mt-1"
+                type="email"
+                value={editingUser.email || ''}
+                onChange={(event) =>
+                  setEditingUser({
+                    ...editingUser,
+                    email: event.target.value
+                  })
+                }
+              />
+            </label>
+
+            <label className="text-sm font-semibold">
+              Phone
+              <input
+                className="field mt-1"
+                value={editingUser.phone || ''}
+                onChange={(event) =>
+                  setEditingUser({
+                    ...editingUser,
+                    phone: event.target.value
+                  })
+                }
+              />
+            </label>
+
+            <label className="text-sm font-semibold">
+              Role
+              <select
+                className="field mt-1"
+                value={editingUser.userType || 'student'}
+                onChange={(event) =>
+                  setEditingUser({
+                    ...editingUser,
+                    userType:
+                      event.target.value
+                  })
+                }
+              >
+                <option value="student">
+                  Student
+                </option>
+
+                <option value="parent">
+                  Parent
+                </option>
+
+                <option value="professional">
+                  Professional
+                </option>
+
+                <option value="admin">
+                  Admin
+                </option>
+              </select>
+            </label>
+
+            <label className="text-sm font-semibold">
+              Education
+              <input
+                className="field mt-1"
+                value={
+                  editingUser.profile
+                    ?.educationLevel || ''
+                }
+                onChange={(event) =>
+                  setEditingUser({
+                    ...editingUser,
+                    profile: {
+                      ...(editingUser.profile || {}),
+                      educationLevel:
+                        event.target.value
+                    }
+                  })
+                }
+              />
+            </label>
+
+            <label className="text-sm font-semibold">
+              State
+              <input
+                className="field mt-1"
+                value={
+                  editingUser.profile?.state || ''
+                }
+                onChange={(event) =>
+                  setEditingUser({
+                    ...editingUser,
+                    profile: {
+                      ...(editingUser.profile || {}),
+                      state:
+                        event.target.value
+                    }
+                  })
+                }
+              />
+            </label>
+
+            <label className="text-sm font-semibold">
+              City
+              <input
+                className="field mt-1"
+                value={
+                  editingUser.profile?.city || ''
+                }
+                onChange={(event) =>
+                  setEditingUser({
+                    ...editingUser,
+                    profile: {
+                      ...(editingUser.profile || {}),
+                      city:
+                        event.target.value
+                    }
+                  })
+                }
+              />
+            </label>
+
+            <label className="text-sm font-semibold">
+              Annual family income
+              <input
+                className="field mt-1"
+                type="number"
+                value={
+                  editingUser.profile
+                    ?.annualFamilyIncome || ''
+                }
+                onChange={(event) =>
+                  setEditingUser({
+                    ...editingUser,
+                    profile: {
+                      ...(editingUser.profile || {}),
+                      annualFamilyIncome:
+                        Number(
+                          event.target.value
+                        )
+                    }
+                  })
+                }
+              />
+            </label>
+
+            <button
+              type="submit"
+              disabled={saving}
+              className="btn-primary md:col-span-2"
+            >
+              <Save size={16} />
+
+              {saving
+                ? 'Saving...'
+                : 'Save changes'}
+            </button>
+          </form>
+        </section>
+      )}
+
+      {/* DATA SYNC */}
+
+      <section className="mt-8 grid gap-6 lg:grid-cols-3">
+        <div className="rounded-[2rem] border border-black/10 bg-white p-6">
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-black/35">
+            Scholarship data
+          </p>
+
+          <h3 className="mt-3 text-xl font-semibold">
+            Data freshness
+          </h3>
+
+          <p className="mt-2 text-sm text-black/50">
+            Oldest verified record:{' '}
+            {formatDate(
+              stats?.dataFreshness
+                ?.oldestScholarship
+            )}
+          </p>
+        </div>
+
+        <div className="rounded-[2rem] border border-black/10 bg-white p-6">
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-black/35">
+            Loan data
+          </p>
+
+          <h3 className="mt-3 text-xl font-semibold">
+            Data freshness
+          </h3>
+
+          <p className="mt-2 text-sm text-black/50">
+            Oldest verified record:{' '}
+            {formatDate(
+              stats?.dataFreshness?.oldestLoan
+            )}
+          </p>
+        </div>
+
+        <div className="rounded-[2rem] border border-black/10 bg-white p-6">
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-black/35">
+            Source monitoring
+          </p>
+
+          <h3 className="mt-3 text-xl font-semibold">
+            Failed syncs
+          </h3>
+
+          <p className="mt-2 text-3xl font-medium">
+            {stats?.failedSyncs?.length || 0}
+          </p>
+        </div>
+      </section>
     </PageShell>
   );
 }

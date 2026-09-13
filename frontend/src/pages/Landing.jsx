@@ -1,564 +1,412 @@
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import {
-  ArrowDown,
   ArrowRight,
   Banknote,
-  Check,
+  CheckCircle2,
   GraduationCap,
   ShieldCheck,
   Sparkles,
 } from 'lucide-react';
-
-const fadeUp = {
-  hidden: {
-    opacity: 0,
-    y: 30,
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.7,
-      ease: [0.22, 1, 0.36, 1],
-    },
-  },
-};
+import { motion } from 'framer-motion';
 
 export default function Landing() {
   return (
-    <main className="overflow-hidden bg-[#f4f1ea] text-[#11110f]">
+    <main className="min-h-screen bg-[#f4f1ea] text-[#11110f]">
+
+      {/* =====================================================
+          NAVBAR
+      ====================================================== */}
+
+      <header className="sticky top-0 z-50 border-b border-black/10 bg-[#f4f1ea]/85 backdrop-blur-xl">
+        <div className="mx-auto flex h-[76px] max-w-[1500px] items-center justify-between px-5 sm:px-8 lg:px-12">
+
+          {/* BRAND */}
+
+          <Link
+            to="/"
+            className="group flex items-center gap-3"
+          >
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#11110f] text-xs font-bold text-white transition group-hover:scale-105">
+              FB
+            </span>
+
+            <span className="text-lg font-bold tracking-[-0.04em]">
+              FINBRIDGE
+            </span>
+          </Link>
+
+          {/* NAV ACTIONS */}
+
+          <div className="flex items-center gap-2 sm:gap-3">
+            <Link
+              to="/login/user"
+              className="hidden text-sm font-medium text-black/60 transition hover:text-black sm:block"
+            >
+              User Login
+            </Link>
+
+            <Link
+              to="/login/admin"
+              className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/60 px-4 py-2.5 text-sm font-semibold transition hover:bg-white"
+            >
+              <ShieldCheck size={15} />
+              <span className="hidden sm:inline">
+                Admin Portal
+              </span>
+              <span className="sm:hidden">
+                Admin
+              </span>
+            </Link>
+
+            <Link
+              to="/register"
+              className="rounded-full bg-[#11110f] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-black/80"
+            >
+              Get started
+            </Link>
+          </div>
+        </div>
+      </header>
 
       {/* =====================================================
           HERO
       ====================================================== */}
-      <section className="relative min-h-[92vh] overflow-hidden border-b border-black/10">
 
-        {/* subtle background shape */}
-        <div className="pointer-events-none absolute -right-40 -top-40 h-[520px] w-[520px] rounded-full bg-[#d9e8d8]" />
+      <section className="mx-auto max-w-[1500px] px-5 pb-16 pt-16 sm:px-8 sm:pb-24 sm:pt-20 lg:px-12 lg:pb-32 lg:pt-28">
+        <div className="grid items-center gap-12 lg:grid-cols-[1.15fr_0.85fr]">
 
-        <div className="pointer-events-none absolute bottom-[-180px] left-[-150px] h-[420px] w-[420px] rounded-full bg-[#ead7c4]" />
-
-        <div className="relative mx-auto max-w-[1500px] px-5 pb-12 pt-8 sm:px-8 lg:px-12">
-
-          {/* Top navigation */}
-          <header className="flex items-center justify-between border-b border-black/10 pb-6">
-
-            <Link
-              to="/"
-              className="text-xl font-black tracking-[-0.05em]"
-            >
-              FINBRIDGE
-            </Link>
-
-            <nav className="hidden items-center gap-8 text-sm font-medium text-black/60 md:flex">
-              <Link
-                to="/scholarships"
-                className="transition hover:text-black"
-              >
-                Scholarships
-              </Link>
-
-              <Link
-                to="/loans"
-                className="transition hover:text-black"
-              >
-                Loans
-              </Link>
-
-              <a
-                href="#how-it-works"
-                className="transition hover:text-black"
-              >
-                How it works
-              </a>
-            </nav>
-
-            <div className="flex items-center gap-3">
-              <Link
-                to="/login"
-                className="hidden text-sm font-medium text-black/60 transition hover:text-black sm:block"
-              >
-                Log in
-              </Link>
-
-              <Link
-                to="/register"
-                className="rounded-full bg-[#11110f] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-black/80"
-              >
-                Get started
-              </Link>
-            </div>
-          </header>
-
-          {/* Hero content */}
-          <div className="grid min-h-[calc(92vh-100px)] items-center gap-14 py-16 lg:grid-cols-[1.05fr_0.95fr] lg:py-20">
-
-            <motion.div
-              initial="hidden"
-              animate="visible"
-              variants={fadeUp}
-              className="relative z-10"
-            >
-              {/* small eyebrow */}
-              <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/50 px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-black/60 backdrop-blur-sm">
-                <ShieldCheck size={14} />
-                Transparent financial discovery
-              </div>
-
-              <h1 className="max-w-5xl text-[3.6rem] font-medium leading-[0.92] tracking-[-0.055em] sm:text-[4.8rem] md:text-[6rem] lg:text-[7rem]">
-                Financial support
-                <br />
-                <span className="font-serif italic">
-                  without the search.
-                </span>
-              </h1>
-
-              <p className="mt-8 max-w-2xl text-base leading-7 text-black/60 sm:text-lg">
-                FinBridge helps students and borrowers discover scholarships,
-                compare loans, and find financial opportunities that actually
-                fit their profile.
-              </p>
-
-              <div className="mt-9 flex flex-wrap items-center gap-3">
-                <Link
-                  to="/scholarships"
-                  className="group inline-flex items-center gap-3 rounded-full bg-[#11110f] px-6 py-3.5 text-sm font-semibold text-white transition hover:translate-y-[-1px] hover:bg-black"
-                >
-                  Find my options
-                  <ArrowRight
-                    size={17}
-                    className="transition-transform group-hover:translate-x-1"
-                  />
-                </Link>
-
-                <Link
-                  to="/loans"
-                  className="inline-flex items-center gap-3 rounded-full border border-black/15 bg-white/50 px-6 py-3.5 text-sm font-semibold transition hover:bg-white"
-                >
-                  Explore loans
-                </Link>
-              </div>
-
-              <div className="mt-10 flex items-center gap-3 text-xs text-black/45">
-                <div className="flex -space-x-2">
-                  <div className="h-8 w-8 rounded-full border-2 border-[#f4f1ea] bg-[#c7d7c4]" />
-                  <div className="h-8 w-8 rounded-full border-2 border-[#f4f1ea] bg-[#dec6ae]" />
-                  <div className="h-8 w-8 rounded-full border-2 border-[#f4f1ea] bg-[#b8c4d6]" />
-                </div>
-
-                <span>
-                  Built to simplify financial discovery.
-                </span>
-              </div>
-            </motion.div>
-
-            {/* Hero product visual */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.94, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{
-                duration: 0.9,
-                delay: 0.15,
-              }}
-              className="relative"
-            >
-              <div className="relative mx-auto max-w-xl">
-
-                {/* background card */}
-                <div className="absolute -right-5 -top-5 h-full w-full rounded-[2rem] border border-black/10 bg-[#ded8cd]" />
-
-                {/* main product card */}
-                <div className="relative rounded-[2rem] border border-black/10 bg-white p-6 shadow-[0_30px_90px_rgba(0,0,0,0.12)] sm:p-8">
-
-                  <div className="flex items-center justify-between border-b border-black/10 pb-5">
-                    <div>
-                      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-black/40">
-                        Your FinBridge match
-                      </p>
-
-                      <h2 className="mt-2 text-xl font-semibold">
-                        Financial profile
-                      </h2>
-                    </div>
-
-                    <div className="rounded-full bg-[#dcebd8] px-3 py-1.5 text-xs font-semibold text-[#375b32]">
-                      Verified
-                    </div>
-                  </div>
-
-                  <div className="mt-7 grid grid-cols-2 gap-3">
-
-                    <div className="rounded-2xl bg-[#f5f2ec] p-4">
-                      <p className="text-xs text-black/40">
-                        Income
-                      </p>
-
-                      <p className="mt-2 text-lg font-semibold">
-                        ₹4.5L
-                      </p>
-                    </div>
-
-                    <div className="rounded-2xl bg-[#f5f2ec] p-4">
-                      <p className="text-xs text-black/40">
-                        Education
-                      </p>
-
-                      <p className="mt-2 text-lg font-semibold">
-                        B.Tech
-                      </p>
-                    </div>
-
-                    <div className="rounded-2xl bg-[#f5f2ec] p-4">
-                      <p className="text-xs text-black/40">
-                        Location
-                      </p>
-
-                      <p className="mt-2 text-lg font-semibold">
-                        Delhi
-                      </p>
-                    </div>
-
-                    <div className="rounded-2xl bg-[#f5f2ec] p-4">
-                      <p className="text-xs text-black/40">
-                        Status
-                      </p>
-
-                      <p className="mt-2 text-lg font-semibold">
-                        Eligible
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="mt-5 rounded-2xl bg-[#11110f] p-5 text-white">
-
-                    <div className="flex items-end justify-between">
-                      <div>
-                        <p className="text-xs uppercase tracking-[0.15em] text-white/50">
-                          Match score
-                        </p>
-
-                        <p className="mt-2 text-5xl font-medium tracking-[-0.05em]">
-                          94%
-                        </p>
-                      </div>
-
-                      <Sparkles className="text-[#d7ee82]" />
-                    </div>
-
-                    <div className="mt-5 h-2 overflow-hidden rounded-full bg-white/10">
-                      <div className="h-full w-[94%] rounded-full bg-[#d7ee82]" />
-                    </div>
-
-                    <p className="mt-4 text-sm leading-6 text-white/55">
-                      Strong compatibility across scholarships and loan
-                      opportunities.
-                    </p>
-                  </div>
-
-                  <div className="mt-5 flex items-center gap-3 text-xs text-black/45">
-                    <ShieldCheck size={15} />
-                    Data sourced from verified financial providers
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-
-          <div className="flex items-center gap-2 text-xs uppercase tracking-[0.18em] text-black/40">
-            <ArrowDown size={14} />
-            Scroll to explore
-          </div>
-        </div>
-      </section>
-
-      {/* =====================================================
-          DISCOVERY
-      ====================================================== */}
-      <section className="bg-[#11110f] px-5 py-24 text-[#f4f1ea] sm:px-8 lg:px-12 lg:py-32">
-        <div className="mx-auto max-w-[1500px]">
+          {/* HERO COPY */}
 
           <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
-            variants={fadeUp}
+            initial={{
+              opacity: 0,
+              y: 24,
+            }}
+            animate={{
+              opacity: 1,
+              y: 0,
+            }}
+            transition={{
+              duration: 0.6,
+            }}
           >
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/40">
-              01 — Discover
+            <div className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/60 px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-black/50">
+              <Sparkles size={14} />
+              Financial discovery, simplified
+            </div>
+
+            <h1 className="mt-7 max-w-5xl text-5xl font-medium leading-[0.95] tracking-[-0.06em] sm:text-6xl lg:text-8xl">
+              Find the financial support that fits your future.
+            </h1>
+
+            <p className="mt-7 max-w-2xl text-base leading-7 text-black/55 sm:text-lg">
+              FinBridge helps students, families and professionals discover
+              scholarships, compare loan opportunities and understand their
+              eligibility from one secure workspace.
             </p>
 
-            <h2 className="mt-5 max-w-4xl text-5xl font-medium leading-[0.95] tracking-[-0.05em] sm:text-6xl lg:text-8xl">
-              Opportunities built
-              <br />
-              around your future.
-            </h2>
+            <div className="mt-9 flex flex-wrap gap-3">
+              <Link
+                to="/register"
+                className="inline-flex items-center gap-2 rounded-full bg-[#11110f] px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-black/80"
+              >
+                Get started
+                <ArrowRight size={16} />
+              </Link>
+
+              <Link
+                to="/login/user"
+                className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white px-6 py-3.5 text-sm font-semibold transition hover:bg-[#faf9f6]"
+              >
+                User Login
+              </Link>
+            </div>
+
+            <div className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3 text-xs font-medium text-black/45">
+              <span className="flex items-center gap-2">
+                <CheckCircle2 size={15} className="text-[#375b32]" />
+                Informational matching
+              </span>
+
+              <span className="flex items-center gap-2">
+                <CheckCircle2 size={15} className="text-[#375b32]" />
+                Official-source verification
+              </span>
+
+              <span className="flex items-center gap-2">
+                <CheckCircle2 size={15} className="text-[#375b32]" />
+                Secure account access
+              </span>
+            </div>
           </motion.div>
 
-          <div className="mt-20 grid gap-px overflow-hidden rounded-[2rem] border border-white/10 bg-white/10 lg:grid-cols-2">
+          {/* HERO CARD */}
 
-            <Link
-              to="/scholarships"
-              className="group bg-[#151513] p-8 transition hover:bg-[#1a1a18] sm:p-12"
-            >
-              <div className="flex items-start justify-between">
-                <div className="rounded-full border border-white/10 p-3">
-                  <GraduationCap size={22} />
+          <motion.div
+            initial={{
+              opacity: 0,
+              scale: 0.97,
+              y: 24,
+            }}
+            animate={{
+              opacity: 1,
+              scale: 1,
+              y: 0,
+            }}
+            transition={{
+              duration: 0.6,
+              delay: 0.12,
+            }}
+            className="relative"
+          >
+            <div className="rounded-[2.5rem] border border-black/10 bg-[#11110f] p-6 text-white shadow-[0_30px_100px_rgba(0,0,0,0.12)] sm:p-8">
+
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/35">
+                    FinBridge workspace
+                  </p>
+
+                  <h2 className="mt-3 text-3xl font-medium tracking-[-0.04em] sm:text-4xl">
+                    One place for better financial decisions.
+                  </h2>
                 </div>
 
-                <ArrowRight
-                  className="transition-transform group-hover:translate-x-2"
-                  size={22}
-                />
+                <div className="rounded-2xl bg-[#dcebd8] p-3 text-[#375b32]">
+                  <Sparkles size={20} />
+                </div>
               </div>
 
-              <div className="mt-28">
-                <p className="text-sm text-white/40">
-                  Scholarships
-                </p>
+              <div className="mt-8 grid gap-3">
+                <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5">
+                  <div className="flex items-start gap-4">
+                    <div className="rounded-2xl bg-white/[0.07] p-3">
+                      <GraduationCap size={20} />
+                    </div>
 
-                <p className="mt-4 text-5xl font-medium tracking-[-0.04em]">
-                  128+
-                </p>
+                    <div>
+                      <p className="text-sm font-semibold">
+                        Scholarship discovery
+                      </p>
 
-                <p className="mt-4 max-w-md text-sm leading-6 text-white/50">
-                  Discover opportunities based on academic, demographic,
-                  geographic and financial eligibility.
-                </p>
-              </div>
-            </Link>
-
-            <Link
-              to="/loans"
-              className="group bg-[#191916] p-8 transition hover:bg-[#1e1e1a] sm:p-12"
-            >
-              <div className="flex items-start justify-between">
-                <div className="rounded-full border border-white/10 p-3">
-                  <Banknote size={22} />
+                      <p className="mt-1 text-xs leading-5 text-white/45">
+                        Discover opportunities and understand your
+                        informational eligibility match.
+                      </p>
+                    </div>
+                  </div>
                 </div>
 
-                <ArrowRight
-                  className="transition-transform group-hover:translate-x-2"
-                  size={22}
-                />
+                <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5">
+                  <div className="flex items-start gap-4">
+                    <div className="rounded-2xl bg-white/[0.07] p-3">
+                      <Banknote size={20} />
+                    </div>
+
+                    <div>
+                      <p className="text-sm font-semibold">
+                        Loan comparison
+                      </p>
+
+                      <p className="mt-1 text-xs leading-5 text-white/45">
+                        Explore available loan products and compare
+                        relevant options.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5">
+                  <div className="flex items-start gap-4">
+                    <div className="rounded-2xl bg-white/[0.07] p-3">
+                      <ShieldCheck size={20} />
+                    </div>
+
+                    <div>
+                      <p className="text-sm font-semibold">
+                        Separate secure portals
+                      </p>
+
+                      <p className="mt-1 text-xs leading-5 text-white/45">
+                        Standard users and administrators have distinct
+                        authentication and access controls.
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
 
-              <div className="mt-28">
-                <p className="text-sm text-white/40">
-                  Loans
-                </p>
+      {/* =====================================================
+          FEATURE STRIP
+      ====================================================== */}
 
-                <p className="mt-4 text-5xl font-medium tracking-[-0.04em]">
-                  24
-                </p>
+      <section className="border-y border-black/10 bg-white/50">
+        <div className="mx-auto grid max-w-[1500px] gap-px bg-black/10 md:grid-cols-3">
+          <div className="bg-[#f4f1ea] p-8 lg:p-10">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-black/35">
+              01
+            </p>
 
-                <p className="mt-4 max-w-md text-sm leading-6 text-white/50">
-                  Compare financial products across education, home,
-                  vehicle and other borrowing needs.
-                </p>
-              </div>
-            </Link>
+            <h3 className="mt-4 text-2xl font-medium tracking-[-0.04em]">
+              Discover
+            </h3>
 
+            <p className="mt-3 text-sm leading-6 text-black/50">
+              Browse scholarships and financial products in one place.
+            </p>
+          </div>
+
+          <div className="bg-[#f4f1ea] p-8 lg:p-10">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-black/35">
+              02
+            </p>
+
+            <h3 className="mt-4 text-2xl font-medium tracking-[-0.04em]">
+              Match
+            </h3>
+
+            <p className="mt-3 text-sm leading-6 text-black/50">
+              Use visible profile criteria to understand your potential
+              eligibility.
+            </p>
+          </div>
+
+          <div className="bg-[#f4f1ea] p-8 lg:p-10">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-black/35">
+              03
+            </p>
+
+            <h3 className="mt-4 text-2xl font-medium tracking-[-0.04em]">
+              Verify
+            </h3>
+
+            <p className="mt-3 text-sm leading-6 text-black/50">
+              Continue through official sources before submitting an
+              application.
+            </p>
           </div>
         </div>
       </section>
 
       {/* =====================================================
-          PROFILE MATCH
+          PORTAL SECTION
       ====================================================== */}
-      <section className="bg-[#f4f1ea] px-5 py-24 sm:px-8 lg:px-12 lg:py-32">
-        <div className="mx-auto max-w-[1500px]">
 
-          <div className="grid gap-16 lg:grid-cols-[0.8fr_1.2fr]">
+      <section className="mx-auto max-w-[1500px] px-5 py-16 sm:px-8 sm:py-24 lg:px-12">
+        <div className="rounded-[2.5rem] bg-[#e8e2d7] p-6 sm:p-10 lg:p-14">
+          <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
 
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: '-100px' }}
-              variants={fadeUp}
-            >
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-black/40">
-                02 — Match
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-black/35">
+                Choose your portal
               </p>
 
-              <h2 className="mt-6 max-w-xl text-5xl font-medium leading-[0.95] tracking-[-0.05em] sm:text-6xl lg:text-7xl">
-                Tell us
+              <h2 className="mt-4 text-4xl font-medium tracking-[-0.05em] sm:text-5xl">
+                One platform.
                 <br />
-                what fits
-                <br />
-                <span className="font-serif italic">
-                  you.
-                </span>
+                Two secure experiences.
               </h2>
 
-              <p className="mt-7 max-w-md text-base leading-7 text-black/55">
-                FinBridge analyzes your profile against eligibility rules
-                and surfaces opportunities that make sense for you.
+              <p className="mt-5 max-w-md text-sm leading-6 text-black/50">
+                Users and administrators enter FinBridge through separate
+                authentication portals designed around their specific needs.
               </p>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-100px' }}
-              transition={{ duration: 0.7 }}
-              className="rounded-[2rem] border border-black/10 bg-white p-6 shadow-[0_30px_80px_rgba(0,0,0,0.08)] sm:p-8"
-            >
-              <div className="flex items-center justify-between border-b border-black/10 pb-5">
-                <div>
-                  <p className="text-xs uppercase tracking-[0.15em] text-black/40">
-                    Eligibility engine
-                  </p>
+            <div className="grid gap-4 md:grid-cols-2">
 
-                  <h3 className="mt-2 text-xl font-semibold">
-                    Your profile
-                  </h3>
-                </div>
+              {/* USER PORTAL */}
 
-                <div className="h-3 w-3 animate-pulse rounded-full bg-[#5f8f57]" />
-              </div>
-
-              <div className="mt-7 grid gap-3 sm:grid-cols-2">
-
-                {[
-                  ['Annual income', '₹4,50,000'],
-                  ['Education', 'B.Tech'],
-                  ['Location', 'Delhi'],
-                  ['Student', 'Yes'],
-                ].map(([label, value]) => (
-                  <div
-                    key={label}
-                    className="rounded-2xl bg-[#f5f2ec] p-5"
-                  >
-                    <p className="text-xs text-black/40">
-                      {label}
-                    </p>
-
-                    <p className="mt-2 font-semibold">
-                      {value}
-                    </p>
-                  </div>
-                ))}
-              </div>
-
-              <div className="mt-6 flex flex-col gap-5 rounded-2xl bg-[#dcebd8] p-6 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#45613f]">
-                    Recommended
-                  </p>
-
-                  <p className="mt-2 text-2xl font-semibold text-[#20301d]">
-                    12 opportunities
-                  </p>
-
-                  <p className="mt-1 text-sm text-[#53674e]">
-                    Strong matches found for this profile.
-                  </p>
-                </div>
-
-                <Link
-                  to="/scholarships"
-                  className="inline-flex items-center justify-center gap-2 rounded-full bg-[#20301d] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#182315]"
-                >
-                  See matches
-                  <ArrowRight size={16} />
-                </Link>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* =====================================================
-          HOW IT WORKS
-      ====================================================== */}
-      <section
-        id="how-it-works"
-        className="border-t border-black/10 bg-[#e8e2d7] px-5 py-24 sm:px-8 lg:px-12 lg:py-32"
-      >
-        <div className="mx-auto max-w-[1500px]">
-
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-black/40">
-            03 — The FinBridge way
-          </p>
-
-          <div className="mt-16 grid gap-10 border-t border-black/10 lg:grid-cols-4">
-
-            {[
-              'Create your profile',
-              'Tell us what you need',
-              'Discover matching options',
-              'Compare and apply',
-            ].map((item, index) => (
-              <motion.div
-                key={item}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{
-                  duration: 0.6,
-                  delay: index * 0.08,
-                }}
-                className="border-b border-black/10 pt-8 lg:border-b-0 lg:border-r lg:pr-8"
+              <Link
+                to="/login/user"
+                className="group rounded-[2rem] border border-black/10 bg-white p-6 transition duration-300 hover:-translate-y-1 hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)]"
               >
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-semibold text-black/35">
-                    0{index + 1}
-                  </span>
+                <div className="flex items-start justify-between">
+                  <div className="rounded-2xl bg-[#f4f1ea] p-3">
+                    <GraduationCap size={21} />
+                  </div>
 
-                  <Check size={17} className="text-black/40" />
+                  <ArrowRight
+                    size={18}
+                    className="text-black/25 transition-transform group-hover:translate-x-1 group-hover:text-black"
+                  />
                 </div>
 
-                <h3 className="mt-10 text-2xl font-medium tracking-[-0.03em]">
-                  {item}
+                <h3 className="mt-7 text-2xl font-semibold tracking-[-0.03em]">
+                  User Portal
                 </h3>
-              </motion.div>
-            ))}
 
+                <p className="mt-2 text-sm leading-6 text-black/50">
+                  Scholarships, loans, eligibility matching and your personal
+                  financial profile.
+                </p>
+
+                <span className="mt-6 inline-flex text-sm font-semibold text-[#375b32]">
+                  Login as user
+                </span>
+              </Link>
+
+              {/* ADMIN PORTAL */}
+
+              <Link
+                to="/login/admin"
+                className="group rounded-[2rem] border border-black/10 bg-[#11110f] p-6 text-white transition duration-300 hover:-translate-y-1 hover:shadow-[0_20px_50px_rgba(0,0,0,0.15)]"
+              >
+                <div className="flex items-start justify-between">
+                  <div className="rounded-2xl bg-white/[0.08] p-3">
+                    <ShieldCheck size={21} />
+                  </div>
+
+                  <ArrowRight
+                    size={18}
+                    className="text-white/30 transition-transform group-hover:translate-x-1 group-hover:text-white"
+                  />
+                </div>
+
+                <h3 className="mt-7 text-2xl font-semibold tracking-[-0.03em]">
+                  Admin Portal
+                </h3>
+
+                <p className="mt-2 text-sm leading-6 text-white/45">
+                  User management, financial analytics, platform monitoring
+                  and administrative controls.
+                </p>
+
+                <span className="mt-6 inline-flex text-sm font-semibold text-[#d7ee82]">
+                  Login as admin
+                </span>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
 
       {/* =====================================================
-          FINAL CTA
+          FOOTER
       ====================================================== */}
-      <section className="bg-[#11110f] px-5 py-28 text-[#f4f1ea] sm:px-8 lg:px-12 lg:py-40">
-        <div className="mx-auto max-w-[1200px] text-center">
 
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/35">
-            Start exploring
-          </p>
+      <footer className="border-t border-black/10">
+        <div className="mx-auto flex max-w-[1500px] flex-col gap-4 px-5 py-8 sm:px-8 md:flex-row md:items-center md:justify-between lg:px-12">
+          <div>
+            <p className="font-bold tracking-[-0.03em]">
+              FINBRIDGE
+            </p>
 
-          <h2 className="mt-6 text-5xl font-medium leading-[0.95] tracking-[-0.05em] sm:text-6xl lg:text-8xl">
-            Financial opportunity
-            <br />
-            should be easier
-            <br />
-            <span className="font-serif italic">
-              to find.
-            </span>
-          </h2>
-
-          <div className="mt-10">
-            <Link
-              to="/scholarships"
-              className="group inline-flex items-center gap-3 rounded-full bg-[#f4f1ea] px-7 py-4 text-sm font-semibold text-[#11110f] transition hover:bg-white"
-            >
-              Explore FinBridge
-              <ArrowRight
-                size={17}
-                className="transition-transform group-hover:translate-x-1"
-              />
-            </Link>
+            <p className="mt-1 text-xs text-black/40">
+              Informational financial discovery and matching platform.
+            </p>
           </div>
 
-          <p className="mx-auto mt-8 max-w-xl text-sm leading-6 text-white/35">
-            FinBridge is an information and discovery platform. It does not
-            itself approve, sanction, or disburse loans or scholarships.
+          <p className="text-xs text-black/40">
+            FinBridge does not itself approve, sanction or disburse loans or
+            scholarships.
           </p>
         </div>
-      </section>
-
+      </footer>
     </main>
   );
 }

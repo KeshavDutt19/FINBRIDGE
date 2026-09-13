@@ -1,4 +1,4 @@
-﻿import {
+import {
   Banknote,
   GraduationCap,
   LayoutDashboard,
@@ -6,6 +6,8 @@
   Menu,
   ShieldCheck,
   UserRound,
+  Users,
+  BarChart3,
   X,
 } from 'lucide-react';
 
@@ -41,15 +43,14 @@ export default function AppLayout() {
       ? adminNav
       : userNav;
 
-  function handleLogout() {
+  const handleLogout = () => {
     logout();
     setMobileOpen(false);
     navigate('/');
-  }
+  };
 
   return (
     <div className="min-h-screen bg-[#f4f1ea] text-[#11110f]">
-
       <header className="sticky top-0 z-50 border-b border-black/10 bg-[#f4f1ea]/85 backdrop-blur-xl">
         <div className="mx-auto flex h-[76px] max-w-[1500px] items-center justify-between px-5 sm:px-8 lg:px-12">
 
@@ -68,30 +69,32 @@ export default function AppLayout() {
 
           {user && (
             <nav className="hidden items-center gap-1 lg:flex">
-              {currentNav.map(([label, to, Icon]) => (
-                <NavLink
-                  key={to}
-                  to={to}
-                  className={({ isActive }) =>
-                    `
-                    inline-flex items-center gap-2
-                    rounded-full
-                    px-4 py-2.5
-                    text-sm
-                    font-medium
-                    transition
-                    ${
-                      isActive
-                        ? 'bg-[#11110f] text-white'
-                        : 'text-black/55 hover:bg-black/5 hover:text-black'
+              {currentNav.map(
+                ([label, to, Icon]) => (
+                  <NavLink
+                    key={to}
+                    to={to}
+                    className={({ isActive }) =>
+                      `
+                      inline-flex items-center gap-2
+                      rounded-full
+                      px-4 py-2.5
+                      text-sm
+                      font-medium
+                      transition
+                      ${
+                        isActive
+                          ? 'bg-[#11110f] text-white'
+                          : 'text-black/55 hover:bg-black/5 hover:text-black'
+                      }
+                      `
                     }
-                    `
-                  }
-                >
-                  <Icon size={15} />
-                  {label}
-                </NavLink>
-              ))}
+                  >
+                    <Icon size={15} />
+                    {label}
+                  </NavLink>
+                )
+              )}
             </nav>
           )}
 
@@ -138,7 +141,9 @@ export default function AppLayout() {
           </div>
 
           <button
-            onClick={() => setMobileOpen((value) => !value)}
+            onClick={() =>
+              setMobileOpen((value) => !value)
+            }
             className="flex h-10 w-10 items-center justify-center rounded-full border border-black/10 bg-white lg:hidden"
             aria-label="Toggle navigation"
           >
@@ -154,26 +159,31 @@ export default function AppLayout() {
           <div className="border-t border-black/10 bg-[#f4f1ea] px-5 py-4 lg:hidden">
             {user ? (
               <div className="space-y-1">
-                {currentNav.map(([label, to, Icon]) => (
-                  <NavLink
-                    key={to}
-                    to={to}
-                    onClick={() => setMobileOpen(false)}
-                    className={({ isActive }) =>
-                      `
-                      flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium
-                      ${
-                        isActive
-                          ? 'bg-[#11110f] text-white'
-                          : 'text-black/60 hover:bg-black/5'
+                {currentNav.map(
+                  ([label, to, Icon]) => (
+                    <NavLink
+                      key={to}
+                      to={to}
+                      onClick={() =>
+                        setMobileOpen(false)
                       }
-                      `
-                    }
-                  >
-                    <Icon size={16} />
-                    {label}
-                  </NavLink>
-                ))}
+                      className={({ isActive }) =>
+                        `
+                        flex items-center gap-3 rounded-2xl
+                        px-4 py-3 text-sm font-medium
+                        ${
+                          isActive
+                            ? 'bg-[#11110f] text-white'
+                            : 'text-black/60 hover:bg-black/5'
+                        }
+                        `
+                      }
+                    >
+                      <Icon size={16} />
+                      {label}
+                    </NavLink>
+                  )
+                )}
 
                 <button
                   onClick={handleLogout}
@@ -187,7 +197,9 @@ export default function AppLayout() {
               <div className="grid gap-2 pb-2">
                 <Link
                   to="/login/user"
-                  onClick={() => setMobileOpen(false)}
+                  onClick={() =>
+                    setMobileOpen(false)
+                  }
                   className="btn-secondary"
                 >
                   User Login
@@ -195,7 +207,9 @@ export default function AppLayout() {
 
                 <Link
                   to="/login/admin"
-                  onClick={() => setMobileOpen(false)}
+                  onClick={() =>
+                    setMobileOpen(false)
+                  }
                   className="btn-primary"
                 >
                   Admin Portal
