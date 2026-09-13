@@ -1,4 +1,4 @@
-import fs from 'fs';
+﻿import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -11,7 +11,6 @@ const dataPath = path.join(
 );
 
 const rawData = fs.readFileSync(dataPath, 'utf8');
-
 const data = JSON.parse(rawData);
 
 const verifiedDate = '2026-08-22';
@@ -118,7 +117,7 @@ export const scholarshipSeed = data.scholarships.map((item) => ({
 
 /*
 |--------------------------------------------------------------------------
-| LOAN DATA
+| LOAN HELPERS
 |--------------------------------------------------------------------------
 */
 
@@ -148,7 +147,7 @@ function extractTenureNumbers(value) {
     };
   }
 
-  const numbers = value.match(/\d+/g);
+  const numbers = String(value).match(/\d+/g);
 
   if (!numbers || numbers.length === 0) {
     return {
@@ -170,7 +169,13 @@ function extractTenureNumbers(value) {
   };
 }
 
-export const loanSeed = data.loans.map((item) => {
+/*
+|--------------------------------------------------------------------------
+| VERIFIED LOAN DATA FROM SNAPSHOT
+|--------------------------------------------------------------------------
+*/
+
+const verifiedLoanSeed = data.loans.map((item) => {
   const category = getLoanCategory(
     item.loan_category
   );
@@ -277,10 +282,408 @@ export const loanSeed = data.loans.map((item) => {
   };
 });
 
+/*
+|--------------------------------------------------------------------------
+| MISSING VERIFIED/PARTIALLY VERIFIED PRODUCTS
+|
+| These three products were part of the original
+| 3-banks × 3-categories comparison architecture:
+|
+| SBI Car
+| SBI Home
+| PNB Home
+|
+| Their detailed official-source verification is applied later
+| by:
+|
+| verifySbiCar.js
+| verifySbiHome.js
+| verifyPnbHome.js
+|--------------------------------------------------------------------------
+*/
+
+const missingVerifiedLoanSeed = [
+  {
+    bankName: 'State Bank of India',
+    category: 'car',
+    productName: 'State Bank of India Car Loan',
+
+    description:
+      'SBI auto/car loan for eligible borrowers and vehicles.',
+
+    interestRate:
+      'Official SBI auto-loan rate range is applied by verifySbiCar.js.',
+
+    interestRateType:
+      'Floating; product and borrower dependent',
+
+    processingFee:
+      'Official SBI processing-fee information is applied by verifySbiCar.js.',
+
+    loanAmountMin:
+      100000,
+
+    loanAmountMax:
+      10000000,
+
+    tenureMin:
+      12,
+
+    tenureMax:
+      84,
+
+    margin:
+      'Vehicle/product dependent.',
+
+    collateralRequired:
+      'Vehicle hypothecation/security as applicable.',
+
+    eligibility:
+      'Eligibility depends on SBI vehicle-loan product, borrower income, repayment capacity, credit profile and vehicle.',
+
+    ageCriteria:
+      'Subject to applicable SBI auto-loan conditions.',
+
+    incomeCriteria:
+      'Regular and verifiable income/repayment capacity required.',
+
+    documents: [
+      'PAN / officially accepted identity document',
+      'Address KYC documents',
+      'Income proof',
+      'Recent bank statements',
+      'Salary slips/Form 16/ITR as applicable',
+      'Vehicle quotation/proforma invoice'
+    ],
+
+    subsidy:
+      'No general government interest subsidy for a standard car loan.',
+
+    subsidyDetails:
+      'Verify any lender-specific concession separately.',
+
+    specialBenefits: [],
+
+    repaymentInfo:
+      'Repayment through sanctioned EMI schedule.',
+
+    applicationProcedure: [
+      'Review SBI auto-loan terms',
+      'Verify current official rate and fees',
+      'Prepare required documents',
+      'Apply through SBI'
+    ],
+
+    officialUrl:
+      'https://sbi.co.in/web/interest-rates/interest-rates/loan-schemes-interest-rates/auto-loans',
+
+    sourceUrl:
+      'https://sbi.co.in/web/interest-rates/interest-rates/loan-schemes-interest-rates/auto-loans',
+
+    sourceName:
+      'State Bank of India',
+
+    lastUpdated:
+      verifiedDate,
+
+    disclaimer:
+      'Verify current SBI rates, fees, eligibility and vehicle/product conditions before applying.',
+
+    dataLabel:
+      'OFFICIAL SOURCE PARTIALLY VERIFIED - SBI auto-loan rate and processing fee verified; product-specific conditions require further verification'
+  },
+
+  {
+    bankName: 'State Bank of India',
+    category: 'home',
+    productName: 'State Bank of India Home Loan',
+
+    description:
+      'SBI home loan for eligible residential property financing.',
+
+    interestRate:
+      'Official SBI current home-loan rate information is applied by verifySbiHome.js.',
+
+    interestRateType:
+      'Floating/scheme-dependent',
+
+    processingFee:
+      'Subject to SBI processing-fee schedule and applicable concessions.',
+
+    loanAmountMin:
+      100000,
+
+    loanAmountMax:
+      100000000,
+
+    tenureMin:
+      12,
+
+    tenureMax:
+      360,
+
+    margin:
+      'Property value, LTV and applicable SBI product dependent.',
+
+    collateralRequired:
+      'Mortgage/security over the financed property.',
+
+    eligibility:
+      'Eligibility depends on borrower income, age, credit profile, repayment capacity, property and applicable SBI home-loan product.',
+
+    ageCriteria:
+      'Subject to SBI age-at-maturity and product conditions.',
+
+    incomeCriteria:
+      'Regular and verifiable income is required.',
+
+    documents: [
+      'PAN / officially accepted identity document',
+      'Address KYC documents',
+      'Income proof',
+      'Salary slips/Form 16/ITR as applicable',
+      'Recent bank statements',
+      'Employment or business proof',
+      'Sale agreement/property purchase documents',
+      'Title and ownership documents',
+      'Approved building plan and applicable property approvals'
+    ],
+
+    subsidy:
+      'Government housing subsidy may apply where the borrower qualifies under an active scheme.',
+
+    subsidyDetails:
+      'Verify current government housing-scheme eligibility separately.',
+
+    specialBenefits: [],
+
+    repaymentInfo:
+      'Repayment through sanctioned EMI schedule; tenure is subject to SBI conditions.',
+
+    applicationProcedure: [
+      'Review SBI home-loan terms',
+      'Verify current official rate and fees',
+      'Prepare borrower and property documents',
+      'Apply through SBI'
+    ],
+
+    officialUrl:
+      'https://sbi.co.in/web/interest-rates/interest-rates/loan-schemes-interest-rates/home-loans-interest-rates-current',
+
+    sourceUrl:
+      'https://sbi.co.in/web/interest-rates/interest-rates/loan-schemes-interest-rates/home-loans-interest-rates-current',
+
+    sourceName:
+      'State Bank of India',
+
+    lastUpdated:
+      verifiedDate,
+
+    disclaimer:
+      'Verify current SBI rates, fees, eligibility and property/product conditions before applying.',
+
+    dataLabel:
+      'OFFICIAL SOURCE PARTIALLY VERIFIED - SBI Home Loan rate and core terms verified; case-specific terms require further verification'
+  },
+
+  {
+    bankName: 'Punjab National Bank',
+    category: 'home',
+    productName: 'Punjab National Bank Home Loan',
+
+    description:
+      'PNB housing loan for eligible residential property financing.',
+
+    interestRate:
+      'PNB Home Loan floating rates currently start from 7.25% p.a. for qualifying borrower/loan conditions.',
+
+    interestRateType:
+      'Floating; rate varies by CIBIL, loan amount, LTV and applicable PNB housing-loan conditions',
+
+    processingFee:
+      'Processing and service charges depend on the applicable PNB housing-loan product and current service-charge schedule.',
+
+    /*
+     * These are BASE values only.
+     * verifyPnbHome.js preserves amount/tenure from
+     * the base record and adds the official verification layer.
+     */
+    loanAmountMin:
+      200000,
+
+    loanAmountMax:
+      50000000,
+
+    tenureMin:
+      12,
+
+    tenureMax:
+      360,
+
+    margin:
+      'Margin/down-payment depends on applicable loan amount, LTV and PNB housing-loan conditions.',
+
+    collateralRequired:
+      'Yes; mortgage of the financed property or other security as required by the sanctioned PNB housing-loan product.',
+
+    eligibility:
+      'Eligibility depends on applicant income, repayment capacity, CIBIL profile, loan amount, LTV, property and applicable PNB housing-loan product.',
+
+    ageCriteria:
+      'Age eligibility depends on borrower age, proposed tenure and PNB product conditions.',
+
+    incomeCriteria:
+      'Regular and verifiable income is required. Salary/business income, bank statements, ITR/Form 16 and other financial evidence may be required.',
+
+    documents: [
+      'PAN / officially accepted identity document',
+      'Address KYC documents',
+      'Income proof',
+      'Salary slips/Form 16/ITR as applicable',
+      'Recent bank statements',
+      'Employment or business proof',
+      'Property sale/agreement documents',
+      'Title and ownership documents',
+      'Approved building plan and applicable property approvals'
+    ],
+
+    subsidy:
+      'Government housing subsidy may apply where the borrower qualifies under an applicable scheme.',
+
+    subsidyDetails:
+      'Verify current government housing-scheme eligibility separately.',
+
+    specialBenefits: [],
+
+    repaymentInfo:
+      'Repayment is through the sanctioned EMI schedule.',
+
+    applicationProcedure: [
+      'Review PNB housing-loan terms',
+      'Verify current official rate and fees',
+      'Prepare borrower and property documents',
+      'Apply through PNB'
+    ],
+
+    officialUrl:
+      'https://www.pnb.bank.in/housing-loan.aspx',
+
+    sourceUrl:
+      'https://www.pnb.bank.in/Retail-Advances-interst-rate-on-advances-linked-to-mclr.html',
+
+    sourceName:
+      'Punjab National Bank',
+
+    lastUpdated:
+      verifiedDate,
+
+    disclaimer:
+      'Verify current PNB rates, fees, eligibility, LTV and property-specific conditions before applying.',
+
+    dataLabel:
+      'OFFICIAL SOURCE PARTIALLY VERIFIED - PNB Home Loan rate structure verified; borrower/product-specific terms require further verification'
+  }
+];
+
+/*
+|--------------------------------------------------------------------------
+| FINAL LOAN DATA
+|
+| Verified snapshot:
+|   6 products
+|
+| Added missing original comparison products:
+|   3 products
+|
+| FINAL:
+|   9 products
+|
+| Exactly:
+|   Education → SBI, BOB, PNB
+|   Car       → SBI, BOB, PNB
+|   Home      → SBI, BOB, PNB
+|--------------------------------------------------------------------------
+*/
+
+export const loanSeed = [
+  ...verifiedLoanSeed,
+  ...missingVerifiedLoanSeed
+];
+
+/*
+|--------------------------------------------------------------------------
+| SANITY CHECKS
+|--------------------------------------------------------------------------
+*/
+
+const expectedLoanKeys = [
+  'State Bank of India|education',
+  'Bank of Baroda|education',
+  'Punjab National Bank|education',
+
+  'State Bank of India|car',
+  'Bank of Baroda|car',
+  'Punjab National Bank|car',
+
+  'State Bank of India|home',
+  'Bank of Baroda|home',
+  'Punjab National Bank|home'
+];
+
+const actualLoanKeys = loanSeed.map(
+  (loan) =>
+    `${loan.bankName}|${loan.category}`
+);
+
+const missingLoanKeys =
+  expectedLoanKeys.filter(
+    (key) => !actualLoanKeys.includes(key)
+  );
+
+const duplicateLoanKeys =
+  actualLoanKeys.filter(
+    (key, index) =>
+      actualLoanKeys.indexOf(key) !== index
+  );
+
+if (missingLoanKeys.length > 0) {
+  throw new Error(
+    `Missing required loan products: ${missingLoanKeys.join(', ')}`
+  );
+}
+
+if (duplicateLoanKeys.length > 0) {
+  throw new Error(
+    `Duplicate loan products detected: ${[
+      ...new Set(duplicateLoanKeys)
+    ].join(', ')}`
+  );
+}
+
+if (loanSeed.length !== 9) {
+  throw new Error(
+    `Expected exactly 9 loan products, found ${loanSeed.length}`
+  );
+}
+
+/*
+|--------------------------------------------------------------------------
+| LOGS
+|--------------------------------------------------------------------------
+*/
+
 console.log(
   `Loaded ${scholarshipSeed.length} scholarships`
 );
 
 console.log(
   `Loaded ${loanSeed.length} loan products`
+);
+
+console.table(
+  loanSeed.map((loan) => ({
+    bank: loan.bankName,
+    category: loan.category,
+    product: loan.productName
+  }))
 );
